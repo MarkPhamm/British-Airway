@@ -85,13 +85,13 @@ def clean_date_flown(df):
     df.head()
     return df
     
-# # Clean Review Column: Trim leading spaces in the 'Review' column
-# def clean_review(df):
-#     # Remove double quotes in the 'Review' column
-#     # Change data type of 'Review' column to string
-#     df['review'] = df['review'].str.replace('"', '')
-#     df['review'] = df['review'].str.lstrip()
-#     return df
+# Clean Review Column: Trim leading spaces in the 'Review' column
+def clean_review_space(df):
+    # Remove double quotes in the 'Review' column
+    # Change data type of 'Review' column to string
+    df['review'] = df['review'].str.replace('"', '')
+    df['review'] = df['review'].str.lstrip()
+    return df
 
 # Rename columns
 def rename_columns(df):
@@ -118,8 +118,8 @@ def main():
     df = clean_country(df)
     df = clean_date_review(df)
     df = clean_date_flown(df)
-    df.head()
     df = clean_review(df)
+    df = clean_review_space(df)
     df = rename_columns(df)
     df = reorder_columns(df)
     # Export the DataFrame to a CSV file for business purposes
