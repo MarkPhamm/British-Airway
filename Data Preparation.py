@@ -85,6 +85,8 @@ def clean_date_flown(df):
     return df
 # Clean Review Column: Trim leading spaces in the 'Review' column
 def clean_review(df):
+    # Remove double quotes in the 'Review' column
+    df['Review'] = df['Review'].str.replace('"', '')
     df['Review'] = df['Review'].str.lstrip()
     return df
 
