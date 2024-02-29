@@ -10,7 +10,7 @@ Team Members
   * Minh Ngo: Business Administration @ FTU Vietnam
   * Ahri Nguyen: Business Administration @ FTU Vietnam
 * BI Team:
-  * [Quan Tran](https://www.linkedin.com/in/hquantran/): Math & MIS @ TCU
+  * [Quan Tran](https://www.linkedin.com/in/hquantran/): Econ & Business Analytics @ USF
 * DS Team:
   * [Robin Tran](https://www.linkedin.com/in/robin-tran/): Data Science @ Mount Holyoke College
 * Advisor/Mentor:
