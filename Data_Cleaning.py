@@ -86,11 +86,10 @@ def clean_date_flown(df):
     return df
     
 # Clean Review Column: Trim leading spaces in the 'Review' column
-def clean_review_space(df):
+def clean_space(df):
     # Remove double quotes in the 'Review' column
     # Change data type of 'Review' column to string
-    df['review'] = df['review'].str.replace('"', '')
-    df['review'] = df['review'].str.lstrip()
+    df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
     return df
 
 def create_id(df):
@@ -123,7 +122,7 @@ def main():
     df = clean_date_review(df)
     df = clean_date_flown(df)
     df = clean_review(df)
-    df = clean_review_space(df)
+    df = clean_space(df)
     df = rename_columns(df)
     df = create_id(df)
     df = reorder_columns(df)
