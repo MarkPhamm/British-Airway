@@ -1,6 +1,6 @@
-## British Airway Project
+# British Airway Project
 Team Members
-* Leader/Analytics Engineer
+* Team Leader/Analytics Engineer/BI Engineer
   * [Mark Pham](https://www.linkedin.com/in/minhbphamm/): Math & MIS @ TCU
 * DE team:
   * [Leonard Dau](https://www.linkedin.com/in/leonard-dau-722399238/): CS @ TCU
