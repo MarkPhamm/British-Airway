@@ -110,8 +110,8 @@ def rename_columns(df):
 def reorder_columns(df):
     df = df[['ID','Dates Review', 'Day Review', 'Month Review','Month Review Number','Year Review','Verified','Customer Name',
         'Month Flown','Month Flown Number', 'Year Flown', 'Month Year Flown','Country', 'Aircraft', 'Type Of Traveller',
-        'Seat Type', 'Route','Seat Comfort','Cabin Staff Service', 'Food & Beverages', 'Ground Service',
-        'Value For Money', 'Wifi & Connectivity','Recommended','Review' ]]
+        'Seat Type', 'Route','Seat Comfort','Cabin Staff Service', 'Food & Beverages', 'Ground Service','Wifi & Connectivity',
+        'Value For Money','Recommended','Review' ]]
     return df
 
 
