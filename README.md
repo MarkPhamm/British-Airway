@@ -5,7 +5,7 @@ In the project, we will extract real-time data from [Air Inequality](https://www
 
 ![image](https://github.com/MarkPhamm/British-Airway/assets/99457952/919f1671-e640-4308-a908-8070585ded96)
 
-**Team Members**
+## Team members
 
 * **Advisor/Mentor:** Offers guidance and oversight for the project.
   * [Nhan Tran](https://www.linkedin.com/in/panicpotatoe/): Lead MLE at One Mount
@@ -28,9 +28,30 @@ In the project, we will extract real-time data from [Air Inequality](https://www
 * **DS Team:** Develops predictive models and analyzes the importance of different features.
   * [Robin Tran](https://www.linkedin.com/in/robin-tran/): Data Science at Mount Holyoke College
 
-
-
-**Project Life cycle**
+## Project Life cycle
 
 ![image](https://github.com/MarkPhamm/British-Airway/assets/99457952/aeff38f4-f999-4905-849a-68afe1514190)
+
+## Project Steps
+
+### Data Extraction (Extraction.py):
+The Extract.py script utilizes BeautifulSoup and requests to scrape real-time reviews from the British Airways page on Airline Quality website. It iterates through a specified number of pages, extracting review details such as date, customer name, country, review body, and ratings on various aspects of the airline service. The extracted data is stored in a pandas DataFrame and saved to a CSV file named 'raw_data.csv'.
+and saves it to a CSV file named 'raw_data.csv'.
+
+This script provides a structured approach to extract and store review data for subsequent analysis.
+### Data Cleaning (Data Cleaning.py):
+The Extract.py script imports pandas as pd and numpy as np libraries to clean and organize data obtained from a CSV file named 'raw_data.csv'.
+
+It defines several functions:
+1. `clean_country`: Removes parentheses from the 'countries' column.
+2. `clean_review`: Splits the 'review_bodies' column into 'verified' and 'review', adjusts 'verified' column values, and checks for 'Trip Verified'.
+3. `clean_date_review`: Splits the 'dates' column into 'Day Review', 'Month Review', and 'Year Review', and converts them into datetime objects.
+4. `clean_date_flown`: Renames and splits the 'Date Flown' column, maps month names to numerical values, and formats 'Month Year Flown' to 'MM/YYYY'.
+5. `clean_space`: Trims leading spaces in the 'Review' column.
+6. `create_id`: Creates an 'ID' column with sequential values.
+7. `rename_columns`: Renames selected columns for clarity.
+8. `reorder_columns`: Reorders DataFrame columns for better organization.
+
+The main function reads the data from 'raw_data.csv', applies the defined cleaning functions sequentially, and exports the resulting DataFrame to a new CSV file named 'clean_data.csv'.
+
 
