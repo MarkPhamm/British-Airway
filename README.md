@@ -1,8 +1,9 @@
 # British Airway Project
 
 **End-to-end Analytics Project for British Airway:** Analyze Customer Experience
-In the project, we will extract real-time data from [Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways), and perform descriptive, diagnostic, predictive modeling, and prescriptive analysis. With the goal of finding insightful recommendations, the team is divided into 4 main teams: Data Engineering (DE), Data Analytics (DA), Business Intelligence (BI), and Data Science (DS)
+In the project, we will extract real-time data from [Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways), and perform 4 types of modern analytics. With the goal of finding insightful recommendations, the team is divided into 4 main teams: Data Engineering (DE), Data Analytics (DA), Business Intelligence (BI), and Data Science (DS)
 
+![image](https://github.com/MarkPhamm/British-Airway/assets/99457952/919f1671-e640-4308-a908-8070585ded96)
 
 **Team Members**
 
