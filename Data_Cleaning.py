@@ -93,6 +93,7 @@ def clean_space(df):
     return df
 
 def create_id(df):
+    df = df.sort_values(by='Dates Review', ascending=False)
     df['ID'] = range(len(df))
     return df
 
@@ -126,9 +127,9 @@ def main():
     df = rename_columns(df)
     df = create_id(df)
     df = reorder_columns(df)
-    # Export the DataFrame to a CSV file for business purposes
     df.to_csv('clean_data.csv', index=False)
 
 if __name__ == "__main__":
     main()
+
 
