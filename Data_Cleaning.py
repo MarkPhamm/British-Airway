@@ -1,13 +1,15 @@
 import pandas as pd
 import numpy as np
 
-# Clean country Column: Remove parentheses from the countries column
 def clean_country(df):
+    # Remove parentheses from the countries column
     df['countries'] = df['countries'].str.replace('(', '').str.replace(')', '')
     return df
 
-# Clean Review Bodies into Bodies and Verified: Split into 
 def clean_review(df):
+    # Clean Review Bodies into Bodies and Verified
+    if df['review_bodies'] is None:
+        df.drop(columns=['review_bodies'], inplace=True)
     # Split the review_bodies column into two separate columns
     split_df = df['review_bodies'].str.split('|', expand=True)
 
@@ -32,7 +34,7 @@ def clean_review(df):
 
     # Check if 'verified' column contains 'Trip Verified' and replace with True, else replace with False
     df['verified'] = df['verified'].str.contains('Trip Verified', case=False, na=False)
-    
+
     return df
 
 # Cleaned dates column and split it into Date Review, Day Review, Month Review, Year Review 
@@ -48,6 +50,9 @@ def clean_date_review(df):
 
     # Create the 'Dates' column by converting the concatenated strings to datetime objects
     df['Dates Review'] = pd.to_datetime(date_strings, format='%d %B %Y')
+
+    # Create the 'Dates Review' column by converting the concatenated strings to datetime objects
+    df['Dates Review'] = pd.to_datetime(df['Dates Review'], format='%Y-%m-%d')
 
     return df
 
@@ -78,17 +83,12 @@ def clean_date_flown(df):
 
     # Convert the combined string to datetime, handling NaN values gracefully
     df['Month Year Flown'] = pd.to_datetime(df['Month Year Flown'], errors='coerce')
-
     # Format 'Month Year Flown' column to display 'MM/YYYY' format
-    df['Month Year Flown'] = df['Month Year Flown'].dt.strftime('%m/%Y')
-
-    df.head()
+    df['Month Year Flown'] = df['Month Year Flown'].dt.strftime('%m-%Y')
     return df
-    
+
 # Clean Review Column: Trim leading spaces in the 'Review' column
 def clean_space(df):
-    # Remove double quotes in the 'Review' column
-    # Change data type of 'Review' column to string
     df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
     return df
 
@@ -115,19 +115,49 @@ def reorder_columns(df):
         'Value For Money','Recommended','Review' ]]
     return df
 
+def format_column(df):
+    new_column_names = {'Dates Review': 'date_review',
+                    'Day Review': 'day_review',
+                    'Month Review': 'month_review',
+                   'Month Review Number': 'month_review_num',
+                   'Year Review': 'year_review',
+                   'Verified': 'verified',
+                   'Customer Name':'name',
+                   'Month Flown': 'month_fly',
+                   'Month Flown Number': 'month_fly_num',
+                    'Year Flown':'year_fly',
+                   'Month Year Flown': 'month_year_fly',
+                   'Country': 'country',
+                   'Aircraft': 'aircraft',
+                   'Type Of Traveller': 'type',
+                   'Seat Type': 'seat_type',
+                   'Route': 'route',
+                   'Seat Comfort': 'seat_comfort',
+                   'Cabin Staff Service': 'cabit_serv',
+                   'Food & Beverages': 'food',
+                   'Ground Service': 'ground_service',
+                   'Wifi & Connectivity': 'wifi',
+                   'Value For Money': 'money_value',
+                   'Recommended': 'recommended',
+                   'Review': 'review'}
+    df.rename(columns=new_column_names, inplace=True)
+    return df
+
 
 def main():
     # change this all to function
     df = pd.read_csv("raw_data.csv")
     df = clean_country(df)
+    df = clean_review(df)
     df = clean_date_review(df)
     df = clean_date_flown(df)
-    df = clean_review(df)
     df = clean_space(df)
     df = rename_columns(df)
     df = create_id(df)
     df = reorder_columns(df)
+    df = format_column(df)
     df.to_csv('clean_data.csv', index=False)
+    print(df.dtypes)
 
 if __name__ == "__main__":
     main()
