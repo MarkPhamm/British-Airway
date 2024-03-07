@@ -117,7 +117,8 @@ def reorder_columns(df):
     return df
 
 def format_column(df):
-    new_column_names = {'Dates Review': 'date_review',
+    new_column_names = {'ID':'id',
+                    'Dates Review': 'date_review',
                     'Day Review': 'day_review',
                     'Month Review': 'month_review',
                    'Month Review Number': 'month_review_num',
@@ -160,6 +161,8 @@ def main():
     df = create_id(df)
     df = reorder_columns(df)
     df = format_column(df)
+    # Drop the first column by its positional index
+    # df.drop(df.columns[0], axis=1, inplace=True)
     df.to_csv(os.path.join(directory, "clean_data.csv"))
     print(df.dtypes)
 
