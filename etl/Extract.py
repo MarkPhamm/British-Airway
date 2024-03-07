@@ -2,6 +2,7 @@
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
+import os
 
 def main():
     base_url = "https://www.airlinequality.com/airline-reviews/british-airways"
@@ -82,7 +83,8 @@ def main():
 
 
     df = pd.DataFrame(reviews_data) 
-    df.to_csv("raw_data.csv")
-
+    directory = "dataset"
+    # Save DataFrame to CSV
+    df.to_csv(os.path.join(directory, "raw_data.csv"))
 if __name__ == "__main__":
     main()

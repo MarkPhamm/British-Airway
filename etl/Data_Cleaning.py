@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 
 def clean_country(df):
     # Remove parentheses from the countries column
@@ -146,7 +147,10 @@ def format_column(df):
 
 def main():
     # change this all to function
-    df = pd.read_csv("raw_data.csv")
+    directory = "dataset"
+    # Save DataFrame to CSV
+    df = pd.read_csv(os.path.join(directory,"raw_data.csv"))
+    print(os.path.join(directory,"raw_data.csv"))
     df = clean_country(df)
     df = clean_review(df)
     df = clean_date_review(df)
@@ -156,7 +160,7 @@ def main():
     df = create_id(df)
     df = reorder_columns(df)
     df = format_column(df)
-    df.to_csv('clean_data.csv', index=False)
+    df.to_csv(os.path.join(directory, "clean_data.csv"))
     print(df.dtypes)
 
 if __name__ == "__main__":
