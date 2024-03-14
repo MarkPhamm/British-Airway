@@ -163,7 +163,7 @@ def main():
     df = format_column(df)
     # Drop the first column by its positional index
     # df.drop(df.columns[0], axis=1, inplace=True)
-    df.to_csv(os.path.join(directory, "clean_data.csv"))
+    df.to_csv(os.path.join(directory, "clean_data.csv"),index=False)
     print(df.dtypes)
 
 if __name__ == "__main__":
