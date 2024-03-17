@@ -1,5 +1,7 @@
 # British Airway Project
 
+[Review app](https://ba-review.streamlit.app/)
+
 **End-to-end Analytics Project for British Airway:** Analyze Customer Experience
 In the project, we will extract real-time data from [Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways), and perform 4 types of modern analytics. With the goal of finding insightful recommendations, the team is divided into 4 main teams: Data Engineering (DE), Data Analytics (DA), Business Intelligence (BI), and Data Science (DS)
 
