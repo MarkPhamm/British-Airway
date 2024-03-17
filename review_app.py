@@ -222,7 +222,6 @@ def create_country_map_chart(df):
     fig = px.choropleth(df, locations=country_counts.index, locationmode='country names', color=country_counts.values, title='Country Distribution')
     return fig
 
-
 # Function to create a pie chart for type
 def create_type_pie_chart(df):
     type_counts = df['type'].value_counts(normalize=True) * 100
