@@ -206,7 +206,8 @@ col5.metric(label="Total number of review", value=f"{review_count:.0f}", delta=N
 
 st.markdown("&nbsp;")
 
-st.write(df)
+st.write("Top 5 most recent review")
+st.write(df.head())
 
 st.header('Chart breakdown')
 # Function to create a pie chart of experience count %
