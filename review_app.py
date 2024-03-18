@@ -7,8 +7,6 @@ import plotly.graph_objects as go
 import numpy as np
 warnings.filterwarnings("ignore")
 
-
-
 df = pd.read_csv(os.path.join('dataset/clean_data.csv'))
 
 def clean_route(df):
@@ -207,7 +205,7 @@ col5.metric(label="Total number of review", value=f"{review_count:.0f}", delta=N
 st.markdown("&nbsp;")
 
 st.write("Top 5 most recent review")
-st.write(df.head())
+st.table(df.iloc[0:5])
 
 st.header('Chart breakdown')
 # Function to create a pie chart of experience count %
