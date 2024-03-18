@@ -158,7 +158,7 @@ trip_type_filter = st.sidebar.multiselect('Trip Type', df['trip_type'].unique())
 purchase_lead_filter_min, purchase_lead_filter_max = st.sidebar.slider('Purchase Lead', min(df['purchase_lead']), max(df['purchase_lead']), (min(df['purchase_lead']), max(df['purchase_lead'])))
 length_of_stay_filter_min, length_of_stay_filter_max = st.sidebar.slider('Length of Stay', min(df['length_of_stay']), max(df['length_of_stay']), (min(df['length_of_stay']), max(df['length_of_stay'])))
 
-st.sidebar.title('customer preference')
+st.sidebar.title('Customer preference')
 wants_extra_baggage_filter = st.sidebar.selectbox('Wants Extra Baggage', [None, True, False])
 wants_preferred_seat_filter = st.sidebar.selectbox('Wants Preferred Seat', [None, True, False])
 wants_in_flight_meals_filter = st.sidebar.selectbox('Wants In-flight Meals', [None, True, False])
@@ -214,7 +214,7 @@ col1.metric(label="Booking Completion Percentage", value=f"{booking_percentage:.
 col2.metric(label="Wants Extra Bag Percentage", value=f"{want_extra_bag_percentage:.2f}%", delta=None)
 col3.metric(label="Wants Preferred Seat Percentage", value=f"{want_prefer_seat_percentage:.2f}%", delta=None)
 col4.metric(label="Wants In-flight Meals Percentage", value=f"{wants_in_flight_meals_percentage:.2f}%", delta=None)
-col5.metric(label="Total Rows", value=f"{total_row:.2f}", delta=None)
+col5.metric(label="Total Rows", value=f"{total_row}", delta=None)
 
 
 st.header('Distribution')
