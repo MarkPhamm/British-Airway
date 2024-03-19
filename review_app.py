@@ -321,7 +321,21 @@ def create_average_money_value_by_year(df):
     fig.update_yaxes(title='Average Money Value')
     return fig
 
+def create_average_recommendation_percentage_by_year(df):
+    # Convert date_review to datetime
+    df['date_review'] = pd.to_datetime(df['date_review'])
+    
+    # Extract year from date_review
+    df['year'] = df['date_review'].dt.year
+    
+    # Calculate average recommendation percentage by year
+    avg_recommendation_percentage_by_year = df.groupby('year')['recommended'].mean().reset_index()
 
+    # Plot
+    fig = px.line(avg_recommendation_percentage_by_year, x='year', y='recommended', title='Average Recommendation Percentage by Year')
+    fig.update_xaxes(title='Year')
+    fig.update_yaxes(title='Average Recommendation Percentage')
+    return fig
 
 # Split the layout into two columns
 col1, col2 = st.columns(2)
@@ -358,6 +372,9 @@ col1.plotly_chart(fig9, use_container_width=True, height=400, width=400)
 
 fig10 = create_average_money_value_by_year(df)
 col2.plotly_chart(fig10, use_container_width=True, height=400, width=400)
+
+fig11 = create_average_recommendation_percentage_by_year(df)
+col1.plotly_chart(fig11, use_container_width=True, height=400, width=400)
 
 
 
