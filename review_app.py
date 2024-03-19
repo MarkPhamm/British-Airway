@@ -205,11 +205,10 @@ col5.metric(label="Total number of review", value=f"{review_count:.0f}", delta=N
 st.markdown("&nbsp;")
 
 st.write("Top 5 most recent review")
-st.write(df[['id','verified', 'date_review', 'day_review', 'month_review', 'month_review_num',
-       'year_review', 'name', 'month_fly', 'month_fly_num',
-       'year_fly', 'month_year_fly', 'country', 'aircraft', 'type',
-       'seat_type', 'route','origin', 'destination', 'transit', 'aircraft_1', 'aircraft_2',
-         'seat_comfort', 'cabit_serv', 'food','ground_service', 'wifi', 'money_value','score','experience', 'recommended', 'review',
+st.write(df[['verified','recommended', 'date_review',
+       'year_review', 'name','month_year_fly', 'country', 'aircraft', 'type',
+       'seat_type','origin', 'destination', 'transit', 'aircraft_1', 'aircraft_2',
+        'seat_comfort', 'cabit_serv', 'food','ground_service', 'wifi', 'money_value','experience', 'review',
        ]].head(5))
 
 st.header('Chart breakdown')
