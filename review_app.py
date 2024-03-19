@@ -241,7 +241,7 @@ def create_seat_type_pie_chart(df):
 # Function to create a map chart for the country column
 def create_country_map_chart(df):
     country_counts = df['country'].value_counts()
-    fig = px.choropleth(df, locations=country_counts.index, locationmode='country names', color=country_counts.values, title='Country Distribution')
+    fig = px.choropleth(df, locations=country_counts.index, locationmode='country names', color=country_counts.values, title='Country Distribution', color_continuous_scale='Blues')
     return fig
 
 # Function to create a bar chart for the country column
