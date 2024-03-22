@@ -5,6 +5,7 @@ import os
 def calculate_score(df):
     df['score'] = df[['seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi']].mean(axis=1)
     return df
+
 def clean_route(df):
     """
     Clean the 'route' column of the DataFrame and split it into 'origin', 'destination', and 'transit' columns.

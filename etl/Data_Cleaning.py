@@ -95,55 +95,79 @@ def clean_space(df):
 
 def create_id(df):
     df = df.sort_values(by='Dates Review', ascending=False)
-    df['ID'] = range(len(df))
+    df['id'] = range(len(df))
     return df
 
 # Rename columns
 def rename_columns(df):
-    df = df.rename(columns={
-        'verified': 'Verified',
-        'review': 'Review',
-        'customer_names': 'Customer Name',
-        'countries': 'Country'
-    })
+    # df = df.rename(columns={
+    #     'verified': 'Verified',
+    #     'review': 'Review',
+    #     'customer_names': 'Customer Name',
+    #     'countries': 'Country'
+    # })
+    new_column_names = {
+                        'Dates Review': 'date_review',
+                        'Day Review': 'day_review',
+                        'Month Review': 'month_review',
+                        'Month Review Number': 'month_review_num',
+                        'Year Review': 'year_review',
+                        'customer_names':'name',
+                        'Month Flown': 'month_fly',
+                        'Month Flown Number': 'month_fly_num',
+                        'Year Flown':'year_fly',
+                        'Month Year Flown': 'month_year_fly',
+                        'countries': 'country',
+                        'Aircraft': 'aircraft',
+                        'Type Of Traveller': 'type',
+                        'Seat Type': 'seat_type',
+                        'Route': 'route',
+                        'Seat Comfort': 'seat_comfort',
+                        'Cabin Staff Service': 'cabit_serv',
+                        'Food & Beverages': 'food',
+                        'Ground Service': 'ground_service',
+                        'Wifi & Connectivity': 'wifi',
+                        'Value For Money': 'money_value',
+                        'Recommended': 'recommended'
+                        }
+    df.rename(columns=new_column_names, inplace=True)
     return df
 
 # Reorder Columns
 def reorder_columns(df):
-    df = df[['ID','Dates Review', 'Day Review', 'Month Review','Month Review Number','Year Review','Verified','Customer Name',
-        'Month Flown','Month Flown Number', 'Year Flown', 'Month Year Flown','Country', 'Aircraft', 'Type Of Traveller',
-        'Seat Type', 'Route','Seat Comfort','Cabin Staff Service', 'Food & Beverages', 'Ground Service','Wifi & Connectivity',
-        'Value For Money','Recommended','Review' ]]
+    df = df[['id','verified','date_review', 'day_review', 'month_review', 'month_review_num', 'year_review', 'verified','name', 
+    'month_fly', 'month_fly_num', 'year_fly', 'month_year_fly', 'country', 'aircraft', 'type', 'seat_type', 'route', 
+    'seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi', 'money_value', 'recommended','review']]
     return df
 
-def format_column(df):
-    new_column_names = {'ID':'id',
-                    'Dates Review': 'date_review',
-                    'Day Review': 'day_review',
-                    'Month Review': 'month_review',
-                   'Month Review Number': 'month_review_num',
-                   'Year Review': 'year_review',
-                   'Verified': 'verified',
-                   'Customer Name':'name',
-                   'Month Flown': 'month_fly',
-                   'Month Flown Number': 'month_fly_num',
-                    'Year Flown':'year_fly',
-                   'Month Year Flown': 'month_year_fly',
-                   'Country': 'country',
-                   'Aircraft': 'aircraft',
-                   'Type Of Traveller': 'type',
-                   'Seat Type': 'seat_type',
-                   'Route': 'route',
-                   'Seat Comfort': 'seat_comfort',
-                   'Cabin Staff Service': 'cabit_serv',
-                   'Food & Beverages': 'food',
-                   'Ground Service': 'ground_service',
-                   'Wifi & Connectivity': 'wifi',
-                   'Value For Money': 'money_value',
-                   'Recommended': 'recommended',
-                   'Review': 'review'}
-    df.rename(columns=new_column_names, inplace=True)
-    return df
+# def format_column(df):
+#     new_column_names = {'ID':'id',
+#                     'Dates Review': 'date_review',
+#                     'Day Review': 'day_review',
+#                     'Month Review': 'month_review',
+#                    'Month Review Number': 'month_review_num',
+#                    'Year Review': 'year_review',
+#                    'Verified': 'verified',
+#                    'Customer Name':'name',
+#                    'Month Flown': 'month_fly',
+#                    'Month Flown Number': 'month_fly_num',
+#                     'Year Flown':'year_fly',
+#                    'Month Year Flown': 'month_year_fly',
+#                    'Country': 'country',
+#                    'Aircraft': 'aircraft',
+#                    'Type Of Traveller': 'type',
+#                    'Seat Type': 'seat_type',
+#                    'Route': 'route',
+#                    'Seat Comfort': 'seat_comfort',
+#                    'Cabin Staff Service': 'cabit_serv',
+#                    'Food & Beverages': 'food',
+#                    'Ground Service': 'ground_service',
+#                    'Wifi & Connectivity': 'wifi',
+#                    'Value For Money': 'money_value',
+#                    'Recommended': 'recommended',
+#                    'Review': 'review'}
+#     df.rename(columns=new_column_names, inplace=True)
+#     return df
 
 
 def main():
@@ -157,10 +181,10 @@ def main():
     df = clean_date_review(df)
     df = clean_date_flown(df)
     df = clean_space(df)
-    df = rename_columns(df)
     df = create_id(df)
+    df = rename_columns(df)
     df = reorder_columns(df)
-    df = format_column(df)
+    # df = format_column(df)
     # Drop the first column by its positional index
     # df.drop(df.columns[0], axis=1, inplace=True)
     df.to_csv(os.path.join(directory, "clean_data.csv"),index=False)
