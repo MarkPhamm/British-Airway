@@ -76,12 +76,43 @@ def clean_aircraft(df, column_name):
     
     return df
 
+def calculate_experience(df):
+    conditions = [
+        (df['money_value'] <= 2),
+        (df['money_value'] == 3),
+        (df['money_value'] >= 4)
+    ]
+
+    choices = ['Poor', 'Fair', 'Good']
+
+    df['experience'] = np.select(conditions, choices, default='unknown')
+    return df
+
+def calculate_service_score(df):
+    # Calculate the average score (Assume the weight is equal)
+    df['score'] = df[['seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi']].mean(axis=1)
+    return df
+
+def replace_yes_no_with_bool(df, column):
+    """
+    Replace 'Yes' and 'No' in the specified column of the DataFrame with True and False respectively.
+    
+    Parameters:
+        df (DataFrame): The DataFrame containing the column to be modified.
+        column (str): The name of the column to be modified.
+        
+    Returns:
+        DataFrame: The modified DataFrame with 'Yes' and 'No' replaced with True and False respectively.
+    """
+    df[column] = df[column].replace({'yes': True, 'no': False})
+    return df
+
 def reorder_columns(df):
     df = df[['id', 'date_review', 'day_review', 'month_review', 'month_review_num',
        'year_review', 'verified', 'name', 'month_fly', 'month_fly_num',
        'year_fly', 'month_year_fly', 'country', 'aircraft','aircraft_1',
        'aircraft_2', 'type', 'seat_type', 'route','origin', 'destination', 'transit', 
-       'seat_comfort', 'cabit_serv', 'food','ground_service', 'wifi', 'money_value', 
+       'seat_comfort', 'cabit_serv', 'food','ground_service', 'wifi', 'money_value', 'score', 'experience',
        'recommended', 'review']]
     return df
 
@@ -96,6 +127,9 @@ def main():
     df = split_aircraft_column(df)
     df = clean_aircraft(df, 'aircraft_1')
     df = clean_aircraft(df, 'aircraft_2')
+    df = calculate_experience(df)
+    df = calculate_service_score(df)
+    df = replace_yes_no_with_bool(df, 'recommended')
     df = reorder_columns(df)
     print(df.columns)
     df.to_csv(os.path.join(directory, "clean_data_expand.csv"),index=False)
