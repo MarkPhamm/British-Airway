@@ -1,9 +1,16 @@
+IF OBJECT_ID('ba_review.dbo.fact_flight', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE ba_review.dbo.dim_flight;
+END
+GO
+
 SELECT 
-    id as customer_id, 
+    id AS customer_id, 
     month_year_fly, 
     aircraft_1, 
     aircraft_2, 
     origin, 
     destination, 
     transit
-FROM ba_review.dbo.original
+INTO ba_review.dbo.dim_flight
+FROM ba_review.dbo.original;
