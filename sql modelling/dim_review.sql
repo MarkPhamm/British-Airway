@@ -1,4 +1,4 @@
-SELECT TOP (100)
+SELECT
     id as customer_id, 
     date_review, 
     review
