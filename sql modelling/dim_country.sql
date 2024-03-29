@@ -9,7 +9,7 @@ WITH unique_country AS
 (
     SELECT 
         distinct CASE WHEN country is null THEN 'Unknown' ELSE country END AS country 
-    FROM ba_review.dbo.orginal
+    FROM ba_review.dbo.original
 ),
 dim_country_cte AS
 (
@@ -19,6 +19,5 @@ dim_country_cte AS
     FROM unique_country
 )
 SELECT * 
-INTO ba_review.dbo.dim_country
 FROM dim_country_cte
 
