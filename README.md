@@ -3,6 +3,16 @@
 This project will simulate a data team at British Airways, from ETL to Business Intelligence and Data Science. we will extract real-time data from [Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways), and perform 4 types of modern analytics to find insightful recommendations.
 
 ![image](https://github.com/MarkPhamm/British-Airway/assets/99457952/919f1671-e640-4308-a908-8070585ded96)
+
+## About the data
+
+### Data Source
+Air Inequality presents a comprehensive platform for evaluating the quality of services provided by British Airways. Through a diverse range of customer reviews and ratings, the website offers valuable insights into various aspects of the airline's performance, including service quality, cabin comfort, onboard amenities, and overall customer satisfaction. Air Inequality serves as a platform where customers can provide feedback and reviews about their experiences with British Airways. While offering valuable insights into service quality and customer satisfaction, it's important to note that the data may be biased as it relies on customer surveys.
+
+### Cleaned Data
+
+
+
 ## TL; DR:
 **Problems:**
 
@@ -20,6 +30,9 @@ This project will simulate a data team at British Airways, from ETL to Business 
 - Enhance staff training programs to improve customer interactions and service quality.
 - Increase staff presence and assistance at London airports, especially during peak travel times, to better support economy-class travelers.
 - Implement feedback mechanisms for customers to report negative staff experiences promptly, allowing for swift resolution and continuous improvement.
+
+**Problem 2:**
+- **Time Series Problems in 2017 and 2023**: Using the filter in Streamlit's [Review app](https://ba-review.streamlit.app/), we discover that the money value score and recommendation rate plummeted in 2017 and 2023 despite the fact that we have multiples review from those years.
 
 ## Team members
 
@@ -59,7 +72,6 @@ The `clean_data.py` script preprocesses data for analysis. It calculates an over
 
 ### 2. Data Analysis
 #### 2.1: Exploratory Data Analysis (EDA.ipynb)
-Exploratory Data Analysis in Python
 The `EDA.ipynb` file explored the British Airways flight dataset through data preprocessing, general analysis of null values and score distributions, service rating analysis with visualizations, sentiment analysis on reviews, and correlation heatmaps. It investigated poor ground experiences for economy class, highlighting issues at London/Heathrow. For non-economy, it focused on food and seat comfort, comparing ratings across segments like recommended/non-recommended flights. Time series analysis visualized score and review count trends over monthly/yearly periods. The analysis uncovered data quality insights, service performance factors, experience elements impacting ratings, and potential seasonal effects to guide further modeling efforts.
  
 * Hypothesis: Economy type tends to care more about Staff, while non-economy care more about Food and Seat comfort
