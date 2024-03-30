@@ -1,8 +1,4 @@
 # British Airway Project
-Here's an overview app of the data
-1. [Review app](https://ba-review.streamlit.app/)
-2. [Booking app](https://ba-booking.streamlit.app/)
-
 **End-to-end Analytics Project for British Airway:** Analyze Customer Experience
 In the project, we will extract real-time data from [Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways), and perform 4 types of modern analytics. With the goal of finding insightful recommendations, the team is divided into 4 main teams: Data Engineering (DE), Data Analytics (DA), Business Intelligence (BI), and Data Science (DS)
 
@@ -41,7 +37,15 @@ In the project, we will extract real-time data from [Air Inequality](https://www
 The Extract.py script utilizes BeautifulSoup and requests to scrape real-time reviews from the British Airways page on the Airline Quality website. It iterates through a specified number of pages, extracting review details such as date, customer name, country, review body, and ratings on various aspects of the airline service. The extracted data is stored in a pandas DataFrame and saved to a CSV file named 'raw_data.csv'.
 and saves it to a CSV file named 'raw_data.csv'.
 
-This script provides a structured approach to extract and store review data for subsequent analysis.
 ### Data Cleaning (Data Cleaning.py):
 The Extract.py script imports pandas as pd and numpy as np libraries to clean and organize data obtained from a CSV file named 'raw_data.csv'.
+
+
+### Streamlit app building
+Here's an overview app of the data
+1. [Review app](https://ba-review.streamlit.app/)
+2. [Booking app](https://ba-booking.streamlit.app/)
+
+
+
 
