@@ -207,8 +207,8 @@ def main():
     col1, col2, col3, col4, col5 = st.columns(5)
     col1.metric(label="Percentage of Recommendation", value=f"{recommendation_percentage:.2f}%", delta=None)
     col2.metric(label="Percentage of Verification", value=f"{verification_percentage:.2f}%", delta=None)
-    col3.metric(label="Average Money Value Score", value=f"{average_money_value:.2f}", delta=None)
-    col4.metric(label="Average Service Score", value=f"{average_service_score:.2f}", delta=None)
+    col3.metric(label="Average Money Value Score", value=f"{average_money_value:.2f} / 5", delta=None)
+    col4.metric(label="Average Service Score", value=f"{average_service_score:.2f} / 5", delta=None)
     col5.metric(label="Total number of review", value=f"{review_count:.0f}", delta=None)
 
     st.markdown("&nbsp;")

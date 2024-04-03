@@ -1,4 +1,4 @@
-IF OBJECT_ID('ba_review.dbo.fact_flight', 'U') IS NOT NULL
+IF OBJECT_ID('ba_review.dbo.dim_flight', 'U') IS NOT NULL
 BEGIN
     DROP TABLE ba_review.dbo.dim_flight;
 END
