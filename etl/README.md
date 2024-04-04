@@ -34,6 +34,12 @@ The pipeline is designed to be triggered on a weekly basis, but can be manually 
 - **Amazon S3**: Serves as the storage for the raw data, intermediate files, and the final processed datasets.
 - **Amazon Athena**: Used for running SQL queries on the data stored in S3, facilitating easy data analysis and integration with other AWS services for machine learning.
 
+## Issues Encountered
+
+### Library Imports in AWS Lambda
+
+One of the challenges we faced during the development of this pipeline was importing external libraries in AWS Lambda. Lambda provides a clean, isolated environment to run code, which makes it secure and efficient, but it also means that it does not have access to external libraries by default.
+
 ## Conclusion
 
 This ETL pipeline is a critical component in understanding customer feedback and driving improvements in service quality for British Airways. The weekly schedule ensures a constant influx of fresh data, enabling ongoing monitoring and analysis.
