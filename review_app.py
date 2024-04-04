@@ -141,8 +141,6 @@ def create_review_count_by_year(df):
 
 
 def main():
-    key_df = pd.read_csv(os.path.join('british-airway-user.csv'), index_col=None)
-
     # Initialize a session using Amazon S3
     aws_access_key_id = st.secrets['aws_access_key_id']
     aws_secret_access_key = st.secrets['aws_secret_access_key']
