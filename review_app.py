@@ -144,7 +144,9 @@ def main():
     key_df = pd.read_csv(os.path.join('british-airway-user.csv'), index_col=None)
 
     # Initialize a session using Amazon S3
-    s3_client = boto3.client('s3', aws_access_key_id=key_df['Access key ID'][0], aws_secret_access_key=key_df['Secret access key'][0])
+    aws_access_key_id = st.secrets['aws_access_key_id']
+    aws_secret_access_key = st.secrets['aws_secret_access_key']
+    s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
     # Name of the S3 bucket
     bucket_name = 'british-airway'
