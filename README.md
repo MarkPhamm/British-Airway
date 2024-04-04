@@ -60,7 +60,12 @@ Air Inequality presents a comprehensive platform for evaluating the quality of s
 ## Project Flow Chart
 
 ## Project Steps
-### 1. Extract - Transform - Load (ETL)
+### 1. Extract - Transform - Load (ETL) - Airline Quality ETL Pipeline
+
+This repository contains the implementation of an Extract, Transform, Load (ETL) pipeline that periodically scrapes customer reviews for British Airways from AirlineQuality.com. The data is processed and used for analytical and machine learning purposes. The pipeline is designed within the AWS Cloud environment, leveraging a combination of AWS Lambda, AWS S3, and Amazon Athena for robust, scalable, and efficient data handling.
+
+![image](https://github.com/MarkPhamm/British-Airway/assets/88282475/cb0d9a6d-5c10-4754-b88a-5ace9474cb09)
+
 #### 1.1 Data Extraction (extract.py):
 The `Extract.py` script scrapes real-time reviews from the British Airways page on the Airline Quality website using BeautifulSoup and requests. It iterates through specified pages, extracting review details like date, customer name, country, review body, and ratings on various aspects of the airline service. The extracted data is stored in a pandas DataFrame and saved to a CSV file named `raw_data.csv`.
 
@@ -69,6 +74,33 @@ The `data_cleaning.py` script preprocesses data using pandas. It removes parenth
 
 #### 1.3 Feature Engineering and Transformation (feature_engineering.py)
 The `clean_data.py` script preprocesses data for analysis. It calculates an overall score, cleans the 'route' column into 'origin', 'destination', and 'transit', splits aircraft types, standardizes names, and categorizes customer experience. It also converts 'Yes' and 'No' values to boolean and reorders columns. This script streamlines data cleaning and expansion, saving results to the `clean_data_expand.csv`.
+
+#### 1.4 Why This Pipeline?
+The purpose of this ETL pipeline is to automate the collection and preprocessing of valuable airline customer feedback data. Analyzing customer reviews can reveal insights into overall customer satisfaction, service quality, and areas needing improvement. By scheduling the pipeline to run weekly, we can track changes in customer sentiment over time, allowing for timely data-driven decisions.
+
+#### 1.5 Usage
+The pipeline is designed to be triggered on a weekly basis, but can be manually invoked if needed. Below are the steps to set up and run the pipeline:
+1. Configure AWS Lambda with the `lambda_function.py` to initiate the ETL process.
+2. Ensure `data_cleaning.py` and `feature_engineering.py` are available in the Lambda environment or in an S3 bucket for Lambda to access.
+3. Set up the required IAM roles and permissions for Lambda to access S3 and run Athena queries.
+4. Monitor the pipeline runs and outputs in the designated S3 bucket and through Amazon CloudWatch logs.
+
+#### 1.6 AWS Cloud Components
+
+- **AWS Lambda**: Manages the orchestration of the ETL tasks.
+- **Amazon S3**: Serves as the storage for the raw data, intermediate files, and the final processed datasets.
+- **Amazon Athena**: Used for running SQL queries on the data stored in S3, facilitating easy data analysis and integration with other AWS services for machine learning.
+
+#### 1.7 Issues Encountered: Library Imports in AWS Lambda
+One of the challenges we faced during the development of this pipeline was importing external libraries in AWS Lambda. Lambda provides a clean, isolated environment to run code, which makes it secure and efficient, but it also means that it does not have access to external libraries by default.
+
+#### 1.8 Conclusion
+
+This ETL pipeline is a critical component in understanding customer feedback and driving improvements in service quality for British Airways. The weekly schedule ensures a constant influx of fresh data, enabling ongoing monitoring and analysis.
+
+For any issues or contributions to this pipeline, please feel free to open an issue or a pull request.
+
+
 
 ### 2. Data Analysis
 #### 2.1: Exploratory Data Analysis (EDA.ipynb)
