@@ -5,6 +5,8 @@ import warnings
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
+import boto3
+from io import StringIO
 warnings.filterwarnings("ignore")
 
 # Function to create a pie chart of experience count %
@@ -139,7 +141,42 @@ def create_review_count_by_year(df):
 
 
 def main():
-    df = pd.read_csv(os.path.join('dataset/clean_data_expand.csv'))
+    key_df = pd.read_csv(os.path.join('british-airway-user.csv'), index_col=None)
+
+    # Initialize a session using Amazon S3
+    s3_client = boto3.client('s3', aws_access_key_id=key_df['Access key ID'][0], aws_secret_access_key=key_df['Secret access key'][0])
+
+    # Name of the S3 bucket
+    bucket_name = 'british-airway'
+
+    # Function to get the latest CSV file
+    def get_latest_csv_file(bucket_name):
+        csv_files = []
+        response = s3_client.list_objects_v2(Bucket=bucket_name)
+        for obj in response.get('Contents', []):
+            if obj['Key'].endswith('.csv'):
+                csv_files.append({'Key': obj['Key'], 'LastModified': obj['LastModified']})
+        
+        # Sort the files by last modified date in descending order
+        latest_csv_file = sorted(csv_files, key=lambda x: x['LastModified'], reverse=True)[0]
+        return latest_csv_file['Key']
+
+    # Function to read a CSV file from S3 into a DataFrame
+    def read_csv_to_df(bucket_name, file_key):
+        csv_obj = s3_client.get_object(Bucket=bucket_name, Key=file_key)
+        body = csv_obj['Body']
+        csv_string = body.read().decode('utf-8')
+        df = pd.read_csv(StringIO(csv_string))
+        return df
+
+    # Get the latest CSV file
+    latest_csv_file = get_latest_csv_file(bucket_name)
+
+    # Read the latest CSV file into a DataFrame
+    df = read_csv_to_df(bucket_name, latest_csv_file)
+
+    # -----------------------------------------------------------
+
     df['date_review'] = pd.to_datetime(df['date_review']).dt.date
 
     # Set page configuration
