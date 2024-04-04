@@ -4,6 +4,9 @@
 
 This repository contains the implementation of an Extract, Transform, Load (ETL) pipeline that periodically scrapes customer reviews for British Airways from AirlineQuality.com. The data is processed and used for analytical and machine learning purposes. The pipeline is designed within the AWS Cloud environment, leveraging a combination of AWS Lambda, AWS S3, and Amazon Athena for robust, scalable, and efficient data handling.
 
+![image](https://github.com/MarkPhamm/British-Airway/assets/88282475/cb0d9a6d-5c10-4754-b88a-5ace9474cb09)
+
+
 ## Pipeline Overview
 
 The ETL pipeline is scheduled to run weekly to ensure the analysis is performed on up-to-date data. It consists of three main processes, each handled by a separate Python script:
@@ -30,6 +33,12 @@ The pipeline is designed to be triggered on a weekly basis, but can be manually 
 - **AWS Lambda**: Manages the orchestration of the ETL tasks.
 - **Amazon S3**: Serves as the storage for the raw data, intermediate files, and the final processed datasets.
 - **Amazon Athena**: Used for running SQL queries on the data stored in S3, facilitating easy data analysis and integration with other AWS services for machine learning.
+
+## Issues Encountered
+
+### Library Imports in AWS Lambda
+
+One of the challenges we faced during the development of this pipeline was importing external libraries in AWS Lambda. Lambda provides a clean, isolated environment to run code, which makes it secure and efficient, but it also means that it does not have access to external libraries by default.
 
 ## Conclusion
 
