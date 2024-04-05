@@ -285,18 +285,17 @@ def create_combined_plot(df):
 
     # Adding traces for average money value and score
     fig.add_trace(go.Scatter(x=avg_money_value_by_year.index, y=avg_money_value_by_year, mode='lines+markers', name='Avg Money Value'))
-    fig.add_trace(go.Scatter(x=avg_score_by_year.index, y=avg_score_by_year, mode='lines+markers', name='Avg Score', yaxis='y2'))
+    fig.add_trace(go.Scatter(x=avg_score_by_year.index, y=avg_score_by_year, mode='lines+markers', name='Avg Score', yaxis='y'))
 
     # Adding trace for average recommendation percentage
-    fig.add_trace(go.Scatter(x=avg_recommendation_percentage_by_year.index, y=avg_recommendation_percentage_by_year, mode='lines+markers', name='Avg Recommendation %', yaxis='y3'))
+    fig.add_trace(go.Scatter(x=avg_recommendation_percentage_by_year.index, y=avg_recommendation_percentage_by_year, mode='lines+markers', name='Avg Recommendation %', yaxis='y2'))
 
-    # Update layout with three y-axes
+    # Update layout with two y-axes
     fig.update_layout(
         title='Average Metrics by Year',
         xaxis=dict(title='Year'),
-        yaxis=dict(title='Average Money Value', side='left', position=0.05, tickvals=[100, 120, 140, 160], ticktext=[100, 120, 140, 160]),
-        yaxis2=dict(title='Score', side='left', overlaying='y', position=0.95, tickvals=[1, 2, 3, 4, 5], ticktext=[1, 2, 3, 4, 5]),
-        yaxis3=dict(title='Percentage', side='right', overlaying='y', position=0.85, tickvals=[0, 10, 20, 30, 40, 50], ticktext=[0, 10, 20, 30, 40, 50]),
+        yaxis=dict(title='Score', side='left', position=0.05, tickvals=[1, 2, 3, 4, 5], ticktext=[1, 2, 3, 4, 5]),
+        yaxis2=dict(title='Percentage', side='right', overlaying='y', position=0.85, tickvals=[0, 10, 20, 30, 40, 50], ticktext=[0, 10, 20, 30, 40, 50]),
         legend=dict(title='Metrics')
     )
     return fig
