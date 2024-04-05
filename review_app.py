@@ -308,9 +308,6 @@ def main():
 
     df = pd.read_csv(latest_csv_file)
 
-    # Read the latest CSV file into a DataFrame
-    # df = pd.read_csv("/Users/robintran/Documents/British-Airway/dataset/clean_data_expand.csv")
-
     # -----------------------------------------------------------
 
     df['date_review'] = pd.to_datetime(df['date_review']).dt.date
