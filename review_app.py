@@ -285,7 +285,7 @@ def create_combined_plot(df):
     fig = go.Figure()
 
     # Adding traces for average money value and score
-    fig.add_trace(go.Scatter(x=avg_money_value_by_year.index, y=avg_score_by_year, mode='lines+markers', name='Avg Money Value'))
+    fig.add_trace(go.Scatter(x=avg_money_value_by_year.index, y=avg_money_value_by_year, mode='lines+markers', name='Avg Money Value'))
     fig.add_trace(go.Scatter(x=avg_score_by_year.index, y=avg_score_by_year, mode='lines+markers', name='Avg Score', yaxis='y2'))
 
     # Adding trace for average recommendation percentage
@@ -295,7 +295,8 @@ def create_combined_plot(df):
     fig.update_layout(
         title='Average Metrics by Year',
         xaxis=dict(title='Year'),
-        yaxis=dict(title='Score and Money Value', side='left', position=0.05),
+        yaxis=dict(title='Average Money Value', side='left', position=0.05),
+        yaxis2=dict(title='Average Score', side='left', overlaying='y', position=0.95),
         yaxis3=dict(title='Average Recommendation %', side='right', overlaying='y', position=0.85),
         legend=dict(title='Metrics')
     )
