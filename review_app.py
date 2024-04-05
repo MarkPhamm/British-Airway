@@ -295,8 +295,7 @@ def create_combined_plot(df):
     fig.update_layout(
         title='Average Metrics by Year',
         xaxis=dict(title='Year'),
-        yaxis=dict(title='Average Money Value', side='left', position=0.05),
-        yaxis2=dict(title='Average Score', side='left', overlaying='y', position=0.95),
+        yaxis=dict(title='Score and Money Value', side='left', position=0.05),
         yaxis3=dict(title='Average Recommendation %', side='right', overlaying='y', position=0.85),
         legend=dict(title='Metrics')
     )
