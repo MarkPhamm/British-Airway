@@ -294,8 +294,8 @@ def create_combined_plot(df):
     fig.update_layout(
         title='Average Metrics by Year',
         xaxis=dict(title='Year'),
-        yaxis=dict(title='Score', side='left', position=0.05, tickvals=[1, 2, 3, 4, 5], ticktext=[1, 2, 3, 4, 5]),
-        yaxis2=dict(title='Percentage', side='right', overlaying='y', position=0.85, tickvals=[0, 10, 20, 30, 40, 50], ticktext=[0, 10, 20, 30, 40, 50]),
+        yaxis=dict(title='Score', side='left', position= 0, tickvals=[1, 2, 3, 4, 5], ticktext=[1, 2, 3, 4, 5]),
+        yaxis2=dict(title='Percentage', side='right', overlaying='y', position= 1, tickvals=[0, 10, 20, 30, 40, 50], ticktext=[0, 10, 20, 30, 40, 50]),
         legend=dict(title='Metrics')
     )
     return fig
