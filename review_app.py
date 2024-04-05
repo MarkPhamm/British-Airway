@@ -291,28 +291,14 @@ def create_combined_plot(df):
     # Adding trace for average recommendation percentage
     fig.add_trace(go.Scatter(x=avg_recommendation_percentage_by_year.index, y=avg_recommendation_percentage_by_year, mode='lines+markers', name='Avg Recommendation %', yaxis='y3'))
 
+    # Update layout with three y-axes
     fig.update_layout(
         title='Average Metrics by Year',
-        xaxis_title='Year',
-        yaxis_title='Average Money Value',
-        yaxis2_title='Average Score',
-        yaxis3_title='Average Recommendation %',
-        legend_title_text='Metrics',
-        yaxis=dict(
-            title='Average Money Value'
-        ),
-        yaxis2=dict(
-            title='Average Score',
-            overlaying='y',
-            side='right'
-        ),
-        yaxis3=dict(
-            title='Average Recommendation %',
-            overlaying='y',
-            side='right',
-            anchor='free',
-            position=1
-        )
+        xaxis=dict(title='Year'),
+        yaxis=dict(title='Average Money Value', side='left', position=0.05),
+        yaxis2=dict(title='Average Score', side='left', overlaying='y', position=0.95),
+        yaxis3=dict(title='Average Recommendation %', side='right', overlaying='y', position=0.85),
+        legend=dict(title='Metrics')
     )
     return fig
 
