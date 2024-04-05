@@ -306,7 +306,8 @@ def main():
     # Get the latest CSV file
     latest_csv_file = get_latest_csv_file(bucket_name)
 
-    df = pd.read_csv(latest_csv_file)
+    # Read the latest CSV file into a DataFrame
+    df = read_csv_to_df(bucket_name, latest_csv_file)
 
     # -----------------------------------------------------------
 
