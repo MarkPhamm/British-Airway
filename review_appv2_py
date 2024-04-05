@@ -454,40 +454,5 @@ def main():
     fig9.update_layout(height=600)
     st.plotly_chart(fig9, use_container_width=True, height=200, width=400)
 
-    # #Graph 2: Pie chart for type
-    # fig3 = create_type_pie_chart(df)
-    # col2.plotly_chart(fig2, use_container_width=True, height=400, width=400)
-
-    # # Graph 3: Pie chart for seat type
-    # fig3 = create_country_map_chart(df)
-    # col1.plotly_chart(fig3, use_container_width=True, height=400, width=400)
-
-    # fig4 = create_country_bar_chart(df)
-    # col2.plotly_chart(fig4, use_container_width=True, height=400, width=400)
-
-    # fig5 = create_top_origin_bar_chart(df)
-    # col1.plotly_chart(fig5, use_container_width=True, height=400, width=400)
-
-    # fig6 = create_top_destination_bar_chart(df)
-    # col2.plotly_chart(fig6, use_container_width=True, height=400, width=400)
-
-    # fig7 = create_top_aircraft_bar_chart(df)
-    # col1.plotly_chart(fig7, use_container_width=True, height=400, width=400)
-
-    # fig8 = create_top_seat_comfort_bar_chart(df)
-    # col2.plotly_chart(fig8, use_container_width=True, height=400, width=400)
-
-    # fig9 = create_average_score_by_year(df)
-    # col1.plotly_chart(fig9, use_container_width=True, height=400, width=400)
-
-    # fig10 = create_average_money_value_by_year(df)
-    # col2.plotly_chart(fig10, use_container_width=True, height=400, width=400)
-
-    # fig11 = create_average_recommendation_percentage_by_year(df)
-    # col1.plotly_chart(fig11, use_container_width=True, height=400, width=400)
-
-    # fig12 = create_review_count_by_year(df)
-    # col2.plotly_chart(fig12, use_container_width=True, height=400, width=400) 
-
 if __name__ == "__main__":
     main()
