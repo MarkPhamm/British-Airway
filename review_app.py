@@ -276,38 +276,40 @@ def create_review_count_by_year(df):
 
 def main():
     # Initialize a session using Amazon S3
-    # aws_access_key_id = st.secrets['aws_access_key_id']
-    # aws_secret_access_key = st.secrets['aws_secret_access_key']
-    # s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+    aws_access_key_id = st.secrets['aws_access_key_id']
+    aws_secret_access_key = st.secrets['aws_secret_access_key']
+    s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
     # Name of the S3 bucket
-    # bucket_name = 'british-airway'
+    bucket_name = 'british-airway'
 
     # Function to get the latest CSV file
-    # def get_latest_csv_file(bucket_name):
-    #     csv_files = []
-    #     response = s3_client.list_objects_v2(Bucket=bucket_name)
-    #     for obj in response.get('Contents', []):
-    #         if obj['Key'].endswith('.csv'):
-    #             csv_files.append({'Key': obj['Key'], 'LastModified': obj['LastModified']})
+    def get_latest_csv_file(bucket_name):
+        csv_files = []
+        response = s3_client.list_objects_v2(Bucket=bucket_name)
+        for obj in response.get('Contents', []):
+            if obj['Key'].endswith('.csv'):
+                csv_files.append({'Key': obj['Key'], 'LastModified': obj['LastModified']})
         
-    #     # Sort the files by last modified date in descending order
-    #     latest_csv_file = sorted(csv_files, key=lambda x: x['LastModified'], reverse=True)[0]
-    #     return latest_csv_file['Key']
+        # Sort the files by last modified date in descending order
+        latest_csv_file = sorted(csv_files, key=lambda x: x['LastModified'], reverse=True)[0]
+        return latest_csv_file['Key']
 
     # Function to read a CSV file from S3 into a DataFrame
-    # def read_csv_to_df(bucket_name, file_key):
-    #     csv_obj = s3_client.get_object(Bucket=bucket_name, Key=file_key)
-    #     body = csv_obj['Body']
-    #     csv_string = body.read().decode('utf-8')
-    #     df = pd.read_csv(StringIO(csv_string))
-    #     return df
+    def read_csv_to_df(bucket_name, file_key):
+        csv_obj = s3_client.get_object(Bucket=bucket_name, Key=file_key)
+        body = csv_obj['Body']
+        csv_string = body.read().decode('utf-8')
+        df = pd.read_csv(StringIO(csv_string))
+        return df
 
     # Get the latest CSV file
-    # latest_csv_file = get_latest_csv_file(bucket_name)
+    latest_csv_file = get_latest_csv_file(bucket_name)
+
+    df = pd.read_csv(latest_csv_file)
 
     # Read the latest CSV file into a DataFrame
-    df = pd.read_csv("/Users/robintran/Documents/British-Airway/dataset/clean_data_expand.csv")
+    # df = pd.read_csv("/Users/robintran/Documents/British-Airway/dataset/clean_data_expand.csv")
 
     # -----------------------------------------------------------
 
@@ -453,41 +455,6 @@ def main():
     fig9 = create_service_rating_distribution_chart(df, service_to_plot)
     fig9.update_layout(height=600)
     st.plotly_chart(fig9, use_container_width=True, height=200, width=400)
-
-    # #Graph 2: Pie chart for type
-    # fig3 = create_type_pie_chart(df)
-    # col2.plotly_chart(fig2, use_container_width=True, height=400, width=400)
-
-    # # Graph 3: Pie chart for seat type
-    # fig3 = create_country_map_chart(df)
-    # col1.plotly_chart(fig3, use_container_width=True, height=400, width=400)
-
-    # fig4 = create_country_bar_chart(df)
-    # col2.plotly_chart(fig4, use_container_width=True, height=400, width=400)
-
-    # fig5 = create_top_origin_bar_chart(df)
-    # col1.plotly_chart(fig5, use_container_width=True, height=400, width=400)
-
-    # fig6 = create_top_destination_bar_chart(df)
-    # col2.plotly_chart(fig6, use_container_width=True, height=400, width=400)
-
-    # fig7 = create_top_aircraft_bar_chart(df)
-    # col1.plotly_chart(fig7, use_container_width=True, height=400, width=400)
-
-    # fig8 = create_top_seat_comfort_bar_chart(df)
-    # col2.plotly_chart(fig8, use_container_width=True, height=400, width=400)
-
-    # fig9 = create_average_score_by_year(df)
-    # col1.plotly_chart(fig9, use_container_width=True, height=400, width=400)
-
-    # fig10 = create_average_money_value_by_year(df)
-    # col2.plotly_chart(fig10, use_container_width=True, height=400, width=400)
-
-    # fig11 = create_average_recommendation_percentage_by_year(df)
-    # col1.plotly_chart(fig11, use_container_width=True, height=400, width=400)
-
-    # fig12 = create_review_count_by_year(df)
-    # col2.plotly_chart(fig12, use_container_width=True, height=400, width=400) 
 
 if __name__ == "__main__":
     main()
