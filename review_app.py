@@ -274,7 +274,6 @@ def create_review_count_by_year(df):
     fig.update_yaxes(title='Review Count')
     return fig
 
-# Function to plot the average money value and score by year, and average % of recommendation by year
 def create_combined_plot(df):
     df['year'] = pd.to_datetime(df['date_review']).dt.year
     
@@ -295,9 +294,9 @@ def create_combined_plot(df):
     fig.update_layout(
         title='Average Metrics by Year',
         xaxis=dict(title='Year'),
-        yaxis=dict(title='Average Money Value', side='left', position=0.05),
-        yaxis2=dict(title='Average Score', side='left', overlaying='y', position=0.95),
-        yaxis3=dict(title='Average Recommendation %', side='right', overlaying='y', position=0.85),
+        yaxis=dict(title='Average Money Value', side='left', position=0.05, tickvals=[100, 120, 140, 160], ticktext=[100, 120, 140, 160]),
+        yaxis2=dict(title='Score', side='left', overlaying='y', position=0.95, tickvals=[1, 2, 3, 4, 5], ticktext=[1, 2, 3, 4, 5]),
+        yaxis3=dict(title='Percentage', side='right', overlaying='y', position=0.85, tickvals=[0, 10, 20, 30, 40, 50], ticktext=[0, 10, 20, 30, 40, 50]),
         legend=dict(title='Metrics')
     )
     return fig
