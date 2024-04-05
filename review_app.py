@@ -274,6 +274,48 @@ def create_review_count_by_year(df):
     fig.update_yaxes(title='Review Count')
     return fig
 
+# Function to plot the average money value and score by year, and average % of recommendation by year
+def create_combined_plot(df):
+    df['year'] = pd.to_datetime(df['date_review']).dt.year
+    
+    avg_money_value_by_year = df.groupby('year')['money_value'].mean()
+    avg_score_by_year = df.groupby('year')['score'].mean()
+    avg_recommendation_percentage_by_year = df.groupby('year')['recommended'].mean() * 100
+    
+    fig = go.Figure()
+
+    # Adding traces for average money value and score
+    fig.add_trace(go.Scatter(x=avg_money_value_by_year.index, y=avg_money_value_by_year, mode='lines+markers', name='Avg Money Value'))
+    fig.add_trace(go.Scatter(x=avg_score_by_year.index, y=avg_score_by_year, mode='lines+markers', name='Avg Score', yaxis='y2'))
+
+    # Adding trace for average recommendation percentage
+    fig.add_trace(go.Scatter(x=avg_recommendation_percentage_by_year.index, y=avg_recommendation_percentage_by_year, mode='lines+markers', name='Avg Recommendation %', yaxis='y3'))
+
+    fig.update_layout(
+        title='Average Metrics by Year',
+        xaxis_title='Year',
+        yaxis_title='Average Money Value',
+        yaxis2_title='Average Score',
+        yaxis3_title='Average Recommendation %',
+        legend_title_text='Metrics',
+        yaxis=dict(
+            title='Average Money Value'
+        ),
+        yaxis2=dict(
+            title='Average Score',
+            overlaying='y',
+            side='right'
+        ),
+        yaxis3=dict(
+            title='Average Recommendation %',
+            overlaying='y',
+            side='right',
+            anchor='free',
+            position=1
+        )
+    )
+    return fig
+
 def main():
     # Initialize a session using Amazon S3
     aws_access_key_id = st.secrets['aws_access_key_id']
@@ -453,6 +495,10 @@ def main():
     fig9 = create_service_rating_distribution_chart(df, service_to_plot)
     fig9.update_layout(height=600)
     st.plotly_chart(fig9, use_container_width=True, height=200, width=400)
+
+    fig10 = create_combined_plot(df)
+    st.plotly_chart(fig10, use_container_width=True)
+
 
 if __name__ == "__main__":
     main()
