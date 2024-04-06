@@ -274,31 +274,31 @@ def create_review_count_by_year(df):
     fig.update_yaxes(title='Review Count')
     return fig
 
-def create_combined_plot(df):
-    df['year'] = pd.to_datetime(df['date_review']).dt.year
+# def create_combined_plot(df):
+#     df['year'] = pd.to_datetime(df['date_review']).dt.year
     
-    avg_money_value_by_year = df.groupby('year')['money_value'].mean()
-    avg_score_by_year = df.groupby('year')['score'].mean()
-    avg_recommendation_percentage_by_year = df.groupby('year')['recommended'].mean() * 100
+#     avg_money_value_by_year = df.groupby('year')['money_value'].mean()
+#     avg_score_by_year = df.groupby('year')['score'].mean()
+#     avg_recommendation_percentage_by_year = df.groupby('year')['recommended'].mean() * 100
     
-    fig = go.Figure()
+#     fig = go.Figure()
 
-    # Adding traces for average money value and score
-    fig.add_trace(go.Scatter(x=avg_money_value_by_year.index, y=avg_money_value_by_year, mode='lines+markers', name='Avg Money Value'))
-    fig.add_trace(go.Scatter(x=avg_score_by_year.index, y=avg_score_by_year, mode='lines+markers', name='Avg Score', yaxis='y'))
+#     # Adding traces for average money value and score
+#     fig.add_trace(go.Scatter(x=avg_money_value_by_year.index, y=avg_money_value_by_year, mode='lines+markers', name='Avg Money Value'))
+#     fig.add_trace(go.Scatter(x=avg_score_by_year.index, y=avg_score_by_year, mode='lines+markers', name='Avg Score', yaxis='y'))
 
-    # Adding trace for average recommendation percentage
-    fig.add_trace(go.Scatter(x=avg_recommendation_percentage_by_year.index, y=avg_recommendation_percentage_by_year, mode='lines+markers', name='Avg Recommendation %', yaxis='y2'))
+#     # Adding trace for average recommendation percentage
+#     fig.add_trace(go.Scatter(x=avg_recommendation_percentage_by_year.index, y=avg_recommendation_percentage_by_year, mode='lines+markers', name='Avg Recommendation %', yaxis='y2'))
 
-    # Update layout with two y-axes
-    fig.update_layout(
-        title='Average Metrics by Year',
-        xaxis=dict(title='Year'),
-        yaxis=dict(title='Score', side='left', position= 0, tickvals=[1, 2, 3, 4, 5], ticktext=[1, 2, 3, 4, 5]),
-        yaxis2=dict(title='Percentage', side='right', overlaying='y', position= 1, tickvals=[0, 10, 20, 30, 40, 50], ticktext=[0, 10, 20, 30, 40, 50]),
-        legend=dict(title='Metrics')
-    )
-    return fig
+#     # Update layout with two y-axes
+#     fig.update_layout(
+#         title='Average Metrics by Year',
+#         xaxis=dict(title='Year'),
+#         yaxis=dict(title='Score', side='left', position= 0, tickvals=[1, 2, 3, 4, 5], ticktext=[1, 2, 3, 4, 5]),
+#         yaxis2=dict(title='Percentage', side='right', overlaying='y', position= 1, tickvals=[0, 10, 20, 30, 40, 50], ticktext=[0, 10, 20, 30, 40, 50]),
+#         legend=dict(title='Metrics')
+#     )
+#     return fig
 
 def main():
     # Initialize a session using Amazon S3
@@ -466,8 +466,8 @@ def main():
     df['date_review'] = pd.to_datetime(df['date_review'])
 
     # Avg score and money_value by year line chart
-    fig7 = create_combined_plot(df)
-    st.plotly_chart(fig7, use_container_width=True)
+    # fig7 = create_combined_plot(df)
+    # st.plotly_chart(fig7, use_container_width=True)
 
     # Ratings by year
     service_columns = ['seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi'] 
