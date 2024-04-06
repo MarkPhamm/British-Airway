@@ -340,7 +340,7 @@ def main():
     df['date_review'] = pd.to_datetime(df['date_review']).dt.date
 
     # Set page configuration
-        st.set_page_config(layout="wide")
+    st.set_page_config(layout="wide")
 
     # Slicers
     st.sidebar.title('General filters')
