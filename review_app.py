@@ -465,13 +465,16 @@ def main():
     st.subheader('Time Series')
     df['date_review'] = pd.to_datetime(df['date_review'])
 
-    # Avg score and money_value by year line chart
-    fig7 = create_combined_average_plot(df)
-    st.plotly_chart(fig7, use_container_width=True)
+    # # Avg score and money_value by year line chart
+    # fig7 = create_combined_average_plot(df)
+    # st.plotly_chart(fig7, use_container_width=True)
 
-    # Avg recommendation rate by year line chart
-    fig8 = create_average_recommendation_percentage_by_year(df)
-    st.plotly_chart(fig8, use_container_width=True)
+    # # Avg recommendation rate by year line chart
+    # fig8 = create_average_recommendation_percentage_by_year(df)
+    # st.plotly_chart(fig8, use_container_width=True)
+
+    fig10 = create_combined_plot(df)
+    st.plotly_chart(fig10, use_container_width=True)
 
     # Ratings by year
     service_columns = ['seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi'] 
