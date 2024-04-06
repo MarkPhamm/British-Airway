@@ -480,5 +480,9 @@ def main():
     fig9.update_layout(height=600)
     st.plotly_chart(fig9, use_container_width=True, height=200, width=400)
 
+    fig10 = create_combined_average_plot(df)
+    st.plotly_chart(fig10, use_container_width=True)
+
+
 if __name__ == "__main__":
     main()
