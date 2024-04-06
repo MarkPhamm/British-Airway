@@ -274,16 +274,42 @@ def create_review_count_by_year(df):
     fig.update_yaxes(title='Review Count')
     return fig
 
+def create_combined_plot(df):
+    df['year'] = pd.to_datetime(df['date_review']).dt.year
+    
+    avg_money_value_by_year = df.groupby('year')['money_value'].mean()
+    avg_score_by_year = df.groupby('year')['score'].mean()
+    avg_recommendation_percentage_by_year = df.groupby('year')['recommended'].mean() * 100
+    
+    fig = go.Figure()
+
+    # Adding traces for average money value and score
+    fig.add_trace(go.Scatter(x=avg_money_value_by_year.index, y=avg_money_value_by_year, mode='lines+markers', name='Avg Money Value'))
+    fig.add_trace(go.Scatter(x=avg_score_by_year.index, y=avg_score_by_year, mode='lines+markers', name='Avg Score', yaxis='y'))
+
+    # Adding trace for average recommendation percentage
+    fig.add_trace(go.Scatter(x=avg_recommendation_percentage_by_year.index, y=avg_recommendation_percentage_by_year, mode='lines+markers', name='Avg Recommendation %', yaxis='y2'))
+
+    # Update layout with two y-axes
+    fig.update_layout(
+        title='Average Metrics by Year',
+        xaxis=dict(title='Year'),
+        yaxis=dict(title='Score', side='left', position= 0, tickvals=[1, 2, 3, 4, 5], ticktext=[1, 2, 3, 4, 5]),
+        yaxis2=dict(title='Percentage', side='right', overlaying='y', position= 1, tickvals=[0, 10, 20, 30, 40, 50], ticktext=[0, 10, 20, 30, 40, 50]),
+        legend=dict(title='Metrics')
+    )
+    return fig
+
 def main():
-    #Initialize a session using Amazon S3
+    # Initialize a session using Amazon S3
     aws_access_key_id = st.secrets['aws_access_key_id']
     aws_secret_access_key = st.secrets['aws_secret_access_key']
     s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
-    #Name of the S3 bucket
+    # Name of the S3 bucket
     bucket_name = 'british-airway'
 
-    #Function to get the latest CSV file
+    # Function to get the latest CSV file
     def get_latest_csv_file(bucket_name):
         csv_files = []
         response = s3_client.list_objects_v2(Bucket=bucket_name)
@@ -295,7 +321,7 @@ def main():
         latest_csv_file = sorted(csv_files, key=lambda x: x['LastModified'], reverse=True)[0]
         return latest_csv_file['Key']
 
-    #Function to read a CSV file from S3 into a DataFrame
+    # Function to read a CSV file from S3 into a DataFrame
     def read_csv_to_df(bucket_name, file_key):
         csv_obj = s3_client.get_object(Bucket=bucket_name, Key=file_key)
         body = csv_obj['Body']
@@ -303,16 +329,18 @@ def main():
         df = pd.read_csv(StringIO(csv_string))
         return df
 
-    #Get the latest CSV file
+    # Get the latest CSV file
     latest_csv_file = get_latest_csv_file(bucket_name)
 
+    # Read the latest CSV file into a DataFrame
+    df = read_csv_to_df(bucket_name, latest_csv_file)
 
     # -----------------------------------------------------------
 
     df['date_review'] = pd.to_datetime(df['date_review']).dt.date
 
     # Set page configuration
-    st.set_page_config(layout="wide")
+        st.set_page_config(layout="wide")
 
     # Slicers
     st.sidebar.title('General filters')
@@ -438,19 +466,15 @@ def main():
     df['date_review'] = pd.to_datetime(df['date_review'])
 
     # Avg score and money_value by year line chart
-    fig7 = create_combined_average_plot(df)
+    fig7 = create_combined_plot(df)
     st.plotly_chart(fig7, use_container_width=True)
-
-    # Avg recommendation rate by year line chart
-    fig8 = create_average_recommendation_percentage_by_year(df)
-    st.plotly_chart(fig8, use_container_width=True)
 
     # Ratings by year
     service_columns = ['seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi'] 
     service_to_plot = st.selectbox('Select a service to plot:', service_columns)
-    fig9 = create_service_rating_distribution_chart(df, service_to_plot)
-    fig9.update_layout(height=600)
-    st.plotly_chart(fig9, use_container_width=True, height=200, width=400)
+    fig8 = create_service_rating_distribution_chart(df, service_to_plot)
+    fig8.update_layout(height=600)
+    st.plotly_chart(fig8, use_container_width=True, height=200, width=400)
 
 if __name__ == "__main__":
     main()
