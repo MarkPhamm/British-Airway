@@ -473,18 +473,15 @@ def main():
     fig8 = create_average_recommendation_percentage_by_year(df)
     # st.plotly_chart(fig8, use_container_width=True)
 
-    fig10 = create_combined_plot(df)
+    fig9 = create_combined_plot(df)
     st.plotly_chart(fig10, use_container_width=True)
 
     # Ratings by year
     service_columns = ['seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi'] 
     service_to_plot = st.selectbox('Select a service to plot:', service_columns)
-    fig9 = create_service_rating_distribution_chart(df, service_to_plot)
-    fig9.update_layout(height=600)
-    st.plotly_chart(fig9, use_container_width=True, height=200, width=400)
-
-    fig10 = create_combined_plot(df)
-    st.plotly_chart(fig10, use_container_width=True)
+    fig10 = create_service_rating_distribution_chart(df, service_to_plot)
+    fig10.update_layout(height=600)
+    st.plotly_chart(fig10, use_container_width=True, height=200, width=400)
 
 
 if __name__ == "__main__":
