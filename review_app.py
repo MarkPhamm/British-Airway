@@ -298,7 +298,7 @@ def create_combined_plot(df):
         yaxis2=dict(title='Percentage', side='right', overlaying='y', position= 1, tickvals=[0, 10, 20, 30, 40, 50], ticktext=[0, 10, 20, 30, 40, 50]),
         legend=dict(title='Metrics')
     )
-#     return fig
+    return fig
 
 def main():
     # Initialize a session using Amazon S3
