@@ -302,38 +302,40 @@ def create_combined_plot(df):
 
 def main():
     # Initialize a session using Amazon S3
-    aws_access_key_id = st.secrets['aws_access_key_id']
-    aws_secret_access_key = st.secrets['aws_secret_access_key']
-    s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+    # aws_access_key_id = st.secrets['aws_access_key_id']
+    # aws_secret_access_key = st.secrets['aws_secret_access_key']
+    # s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
-    # Name of the S3 bucket
-    bucket_name = 'british-airway'
+    # # Name of the S3 bucket
+    # bucket_name = 'british-airway'
 
-    # Function to get the latest CSV file
-    def get_latest_csv_file(bucket_name):
-        csv_files = []
-        response = s3_client.list_objects_v2(Bucket=bucket_name)
-        for obj in response.get('Contents', []):
-            if obj['Key'].endswith('.csv'):
-                csv_files.append({'Key': obj['Key'], 'LastModified': obj['LastModified']})
+    # # Function to get the latest CSV file
+    # def get_latest_csv_file(bucket_name):
+    #     csv_files = []
+    #     response = s3_client.list_objects_v2(Bucket=bucket_name)
+    #     for obj in response.get('Contents', []):
+    #         if obj['Key'].endswith('.csv'):
+    #             csv_files.append({'Key': obj['Key'], 'LastModified': obj['LastModified']})
         
-        # Sort the files by last modified date in descending order
-        latest_csv_file = sorted(csv_files, key=lambda x: x['LastModified'], reverse=True)[0]
-        return latest_csv_file['Key']
+    #     # Sort the files by last modified date in descending order
+    #     latest_csv_file = sorted(csv_files, key=lambda x: x['LastModified'], reverse=True)[0]
+    #     return latest_csv_file['Key']
 
-    # Function to read a CSV file from S3 into a DataFrame
-    def read_csv_to_df(bucket_name, file_key):
-        csv_obj = s3_client.get_object(Bucket=bucket_name, Key=file_key)
-        body = csv_obj['Body']
-        csv_string = body.read().decode('utf-8')
-        df = pd.read_csv(StringIO(csv_string))
-        return df
+    # # Function to read a CSV file from S3 into a DataFrame
+    # def read_csv_to_df(bucket_name, file_key):
+    #     csv_obj = s3_client.get_object(Bucket=bucket_name, Key=file_key)
+    #     body = csv_obj['Body']
+    #     csv_string = body.read().decode('utf-8')
+    #     df = pd.read_csv(StringIO(csv_string))
+    #     return df
 
-    # Get the latest CSV file
-    latest_csv_file = get_latest_csv_file(bucket_name)
+    # # Get the latest CSV file
+    # latest_csv_file = get_latest_csv_file(bucket_name)
 
-    # Read the latest CSV file into a DataFrame
-    df = read_csv_to_df(bucket_name, latest_csv_file)
+    # # Read the latest CSV file into a DataFrame
+    # df = read_csv_to_df(bucket_name, latest_csv_file)
+
+    df = pd.read_csv("/Users/robintran/Documents/British-Airway/dataset/clean_data_expand.csv")
 
     # -----------------------------------------------------------
 
@@ -466,8 +468,8 @@ def main():
     df['date_review'] = pd.to_datetime(df['date_review'])
 
     # Avg score and money_value by year line chart
-    fig7 = create_combined_plot(df)
-    st.plotly_chart(fig7, use_container_width=True)
+    # fig7 = create_combined_plot(df)
+    # st.plotly_chart(fig7, use_container_width=True)
 
     # Ratings by year
     service_columns = ['seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi'] 
