@@ -9,6 +9,7 @@ import boto3
 from io import StringIO
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from openai import OpenAI
 from open_ai import return_chatgpt_review_negative
 warnings.filterwarnings("ignore")
 
