@@ -7,6 +7,8 @@ import plotly.graph_objects as go
 import numpy as np
 import boto3
 from io import StringIO
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 warnings.filterwarnings("ignore")
 
 # Function to create a bar chart of experience 
@@ -398,17 +400,39 @@ def main():
     average_service_score = df['score'].mean()
     review_count = len(df)
 
+   # Get the current date
+    current_date = datetime.now()
+
+    df['date_review'] = pd.to_datetime(df['date_review'])
+    # Filter the DataFrame for records within the current month and year
+    this_month_df = df.loc[(df['date_review'].dt.month == current_date.month) & (df['date_review'].dt.year == current_date.year)]
+
+    # Calculate the date for the first day of the previous month
+    previous_month_first_day = current_date - relativedelta(months=1)
+    previous_month_first_day = previous_month_first_day.replace(day=1)
+    # Calculate the date for the last day of the previous month
+    previous_month_last_day = previous_month_first_day + relativedelta(day=31)
+
+    # Filter the DataFrame for records within the previous month
+    previous_month_df = df.loc[(df['date_review'] >= previous_month_first_day) & (df['date_review'] <= previous_month_last_day)]
+
+
+    this_recommendation_percentage = this_month_df['recommended'].mean() *100 
+    this_average_money_value = this_month_df['money_value'].mean()
+    this_average_service_score = this_month_df['score'].mean()
+    this_review_count = len(this_month_df)
+
     # Calculate previous metrics
-    previous_recommendation_percentage = previous_df['recommended'].mean() * 100
-    previous_average_money_value = previous_df['money_value'].mean()
-    previous_average_service_score = previous_df['score'].mean()
-    previous_review_count = len(previous_df)
+    previous_recommendation_percentage = previous_month_df['recommended'].mean() * 100
+    previous_average_money_value = previous_month_df['money_value'].mean()
+    previous_average_service_score = previous_month_df['score'].mean()
+    previous_review_count = len(previous_month_df)
     
     # Calculate changes in metrics
-    change_recommendation_percentage = recommendation_percentage - previous_recommendation_percentage
-    change_average_money_value = average_money_value - previous_average_money_value
-    change_average_service_score = average_service_score - previous_average_service_score
-    change_review_count = review_count - previous_review_count
+    change_recommendation_percentage = this_recommendation_percentage - previous_recommendation_percentage
+    change_average_money_value = this_average_money_value - previous_average_money_value
+    change_average_service_score = this_average_service_score - previous_average_service_score
+    change_review_count = this_review_count - previous_review_count
 
     # Display the percentages as a dashboard
     st.header('All Time Metrics')
@@ -431,16 +455,16 @@ def main():
     st.header('This Week Metrics')
     col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
     with col1:
-        st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%", delta=f"{change_recommendation_percentage:.2f}% from last week")
+        st.metric(label="Recommendation Percentage", value=f"{this_recommendation_percentage:.2f}%", delta=f"{change_recommendation_percentage:.2f}% from last week")
         st.caption('A higher percentage indicates customers are more likely to recommend.')
     with col2:
-        st.metric(label="VFM Score", value=f"{average_money_value:.2f} / 5", delta= f"{change_average_money_value:.3f}% from last week")
+        st.metric(label="VFM Score", value=f"{this_average_money_value:.2f} / 5", delta= f"{change_average_money_value:.3f}% from last week")
         st.caption('A higher score indicates greater satisfaction with the investment.')
     with col3:
-        st.metric(label="Service Score", value=f"{average_service_score:.2f} / 5", delta=f"{change_average_service_score:.3f}% from last week")
+        st.metric(label="Service Score", value=f"{this_average_service_score:.2f} / 5", delta=f"{change_average_service_score:.3f}% from last week")
         st.caption('A higher score indicates greater satisfaction with services.')
     with col4:
-        st.metric(label="Total number of review", value=f"{review_count:.0f}", delta=f"+{change_review_count} reviews from last week")
+        st.metric(label="Total number of review", value=f"{this_review_count:.0f}", delta=f"+{change_review_count} reviews from last week")
         st.caption('Total number of reviews from Air Quality.')
     st.markdown("&nbsp;")
 
