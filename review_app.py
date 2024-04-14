@@ -481,12 +481,11 @@ def main():
     # -------------------------------------
     # Review Analysis
     st.header('Customer Feedbacks for improvement')
-
-    prompt = st.text_input("Say something")
-    if prompt:
-        st.write(f"User has sent the following prompt: {prompt}")
-
-    st.write(open_ai.return_chatgpt_review_negative(this_month_df))
+    instruction =""" Here's the list of review for British Airway, extract negative aspect of BA in the review (use 5-10 bullet points) 
+    Eg: BA has crammed as many seats in business, cabin felt cramped, The bedding was atrocious, an old scraggly blanket and I’ll fitting seat cover,... """
+    instruction = st.text_input("Ask something about this month review")
+    if instruction:
+        st.write(open_ai.return_chatgpt_review_negative(this_month_df, instruction))
     
     # -------------------------------------
     # Chart Breakdown
