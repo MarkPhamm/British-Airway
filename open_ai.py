@@ -6,7 +6,6 @@ from datetime import datetime
 import streamlit as st
 # see also python-decouple
 
-
 # openai.api_key = os.environ.get("OPEN_AI")
 # openai_api_key = os.getenv("OPENAI_KEY")
 openai_api_key = st.secrets['OPENAI_KEY']

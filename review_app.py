@@ -343,7 +343,6 @@ def main():
     dataframes = [read_csv_to_df(bucket_name, file_key) for file_key in recent_csv_files]
 
     df= dataframes[0]
-    previous_df = dataframes[1]
 
     # -----------------------------------------------------------
 
@@ -482,6 +481,7 @@ def main():
     # -------------------------------------
     # Review Analysis
     st.header('Customer Feedbacks for improvement')
+    st.chat_input("Input your prompt about customer review this month")
     this_month_negative_input = this_month_df.loc[this_month_df['recommended'] == False]['review'].to_string(index = False)
     st.write(open_ai.return_chatgpt_review_negative(this_month_negative_input))
     
