@@ -3,6 +3,7 @@ import pandas as pd
 import os
 from datetime import datetime
 from dotenv import load_dotenv
+import streamlit as st
 # see also python-decouple
 
 load_dotenv()
@@ -18,7 +19,8 @@ this_month_negative_input = this_month_df.loc[this_month_df['recommended'] == Fa
 this_month_positive_input = this_month_df.loc[this_month_df['recommended'] == True]['review'].to_string(index = False)
 
 # openai.api_key = os.environ.get("OPEN_AI")
-openai_api_key = os.getenv("OPENAI_KEY")
+# openai_api_key = os.getenv("OPENAI_KEY")
+openai_api_key = st.secrets['OPENAI_KEY']
 model = "gpt-3.5-turbo-0125"
 
 client = OpenAI(
