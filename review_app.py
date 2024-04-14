@@ -397,12 +397,25 @@ def main():
     average_money_value = df['money_value'].mean()
     average_service_score = df['score'].mean()
     review_count = len(df)
+
+    # Calculate previous metrics
+    previous_recommendation_percentage = previous_df['recommended'].mean() * 100
+    previous_average_money_value = previous_df['money_value'].mean()
+    previous_average_service_score = previous_df['score'].mean()
+    previous_review_count = len(previous_df)
     
+    # Calculate changes in metrics
+    change_recommendation_percentage = recommendation_percentage - previous_recommendation_percentage
+    change_average_money_value = average_money_value - previous_average_money_value
+    change_average_service_score = average_service_score - previous_average_service_score
+    change_review_count = review_count - previous_review_count
+
+
     # Display the percentages as a dashboard
     st.header('General Metrics')
     col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
     with col1:
-        st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%", delta="-5.71% from last week")
+        st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%", delta="{change_recommendation_percentage}% from last week")
         st.caption('A higher percentage indicates customers are more likely to recommend.')
     with col2:
         st.metric(label="VFM Score", value=f"{average_money_value:.2f} / 5", delta= "-0.2% from last week")
