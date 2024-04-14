@@ -410,8 +410,22 @@ def main():
     change_average_service_score = average_service_score - previous_average_service_score
     change_review_count = review_count - previous_review_count
 
-
-
+    # Display the percentages as a dashboard
+    st.header('All Time Metrics')
+    col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
+    with col1:
+        st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%")
+        st.caption('A higher percentage indicates customers are more likely to recommend.')
+    with col2:
+        st.metric(label="VFM Score", value=f"{average_money_value:.2f} / 5")
+        st.caption('A higher score indicates greater satisfaction with the investment.')
+    with col3:
+        st.metric(label="Service Score", value=f"{average_service_score:.2f} / 5")
+        st.caption('A higher score indicates greater satisfaction with services.')
+    with col4:
+        st.metric(label="Total number of review", value=f"{review_count:.0f}")
+        st.caption('Total number of reviews from Air Quality.')
+    st.markdown("&nbsp;")
 
     # Display the percentages as a dashboard
     st.header('This Week Metrics')
@@ -430,18 +444,7 @@ def main():
         st.caption('Total number of reviews from Air Quality.')
     st.markdown("&nbsp;")
 
-    # Display the percentages as a dashboard
-    st.header('All Time Metrics')
-    col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
-    with col1:
-        st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%")
-    with col2:
-        st.metric(label="VFM Score", value=f"{average_money_value:.2f} / 5")
-    with col3:
-        st.metric(label="Service Score", value=f"{average_service_score:.2f} / 5")
-    with col4:
-        st.metric(label="Total number of review", value=f"{review_count:.0f}")
-    st.markdown("&nbsp;")
+
 
     # Display the reviews
     if st.checkbox('Show all reviews'):
