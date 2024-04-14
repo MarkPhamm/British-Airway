@@ -7,13 +7,13 @@ import streamlit as st
 # see also python-decouple
 # load_dotenv()
 
-df = pd.read_csv('dataset\clean_data_expand.csv')
-current_date = datetime.now()
+# df = pd.read_csv('dataset\clean_data_expand.csv')
+# current_date = datetime.now()
 
-df['date_review'] = pd.to_datetime(df['date_review'])
-# Filter the DataFrame for records within the current month and year
-this_month_df = df.loc[(df['date_review'].dt.month == current_date.month) & (df['date_review'].dt.year == current_date.year)]
-input = this_month_df.to_string(index = False)
+# df['date_review'] = pd.to_datetime(df['date_review'])
+# # Filter the DataFrame for records within the current month and year
+# this_month_df = df.loc[(df['date_review'].dt.month == current_date.month) & (df['date_review'].dt.year == current_date.year)]
+# input = this_month_df.to_string(index = False)
 
 # openai.api_key = os.environ.get("OPEN_AI")
 # openai_api_key = os.getenv("OPENAI_KEY")
