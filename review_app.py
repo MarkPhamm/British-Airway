@@ -9,6 +9,7 @@ import boto3
 from io import StringIO
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from open_ai import return_chatgpt_review_negative
 warnings.filterwarnings("ignore")
 
 # Function to create a bar chart of experience 
@@ -394,13 +395,15 @@ def main():
     # Streamlit app
     st.title('Flight Reviews')
 
+    # -------------------------------------
+    # Metrics Breakdown
+
     # Calculate general metrics
     recommendation_percentage = df['recommended'].mean() * 100
     average_money_value = df['money_value'].mean()
     average_service_score = df['score'].mean()
     review_count = len(df)
 
-   # Get the current date
     current_date = datetime.now()
 
     df['date_review'] = pd.to_datetime(df['date_review'])
@@ -468,15 +471,18 @@ def main():
         st.caption('Total number of reviews from Air Quality.')
     st.markdown("&nbsp;")
 
-
-
     # Display the reviews
     if st.checkbox('Show all reviews'):
         st.write(df)
     else:
         st.write("Top 5 most recent reviews")
         st.write(df.head(5))
-
+    # -------------------------------------
+    # Review Analysis
+    st.header('Customer Feedbacks for improvement')
+    this_month_negative_input = this_month_df.loc[this_month_df['recommended'] == False]['review'].to_string(index = False)
+    st.write(return_chatgpt_review_negative(this_month_negative_input))
+    
     # -------------------------------------
     # Chart Breakdown
     st.header('Chart breakdown')
