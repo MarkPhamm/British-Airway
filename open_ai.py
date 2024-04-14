@@ -38,6 +38,6 @@ def return_chatgpt_review(input, instruction):
         ],
     )
     return chat_completion.choices[0].message.content
-print(return_chatgpt_review(input, instruction=""" Here's the list of review for British Airway, extract negative aspect of BA in the review (use 5-10 bullet points) 
-    Eg: BA has crammed as many seats in business, cabin felt cramped, The bedding was atrocious, an old scraggly blanket and I’ll fitting seat cover,... """
-))
+# print(return_chatgpt_review(input, instruction=""" Here's the list of review for British Airway, extract negative aspect of BA in the review (use 5-10 bullet points) 
+#     Eg: BA has crammed as many seats in business, cabin felt cramped, The bedding was atrocious, an old scraggly blanket and I’ll fitting seat cover,... """
+# ))
