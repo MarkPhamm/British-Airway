@@ -481,7 +481,9 @@ def main():
     # -------------------------------------
     # Review Analysis
     st.header('Customer Feedbacks for improvement')
-    prompt = st.chat_input("Input your prompt about customer review this month")
+    prompt = st.chat_input("Say something")
+    if prompt:
+        st.write(f"User has sent the following prompt: {prompt}")
     st.write(open_ai.return_chatgpt_review_negative(this_month_df))
     
     # -------------------------------------
