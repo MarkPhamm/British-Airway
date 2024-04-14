@@ -452,19 +452,19 @@ def main():
     st.markdown("&nbsp;")
 
     # Display the percentages as a dashboard
-    st.header('This Week Metrics')
+    st.header('This month Metrics')
     col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
     with col1:
-        st.metric(label="Recommendation Percentage", value=f"{this_recommendation_percentage:.2f}%", delta=f"{change_recommendation_percentage:.2f}% from last week")
+        st.metric(label="Recommendation Percentage", value=f"{this_recommendation_percentage:.2f}%", delta=f"{change_recommendation_percentage:.2f}% from last month")
         st.caption('A higher percentage indicates customers are more likely to recommend.')
     with col2:
-        st.metric(label="VFM Score", value=f"{this_average_money_value:.2f} / 5", delta= f"{change_average_money_value:.3f}% from last week")
+        st.metric(label="VFM Score", value=f"{this_average_money_value:.2f} / 5", delta= f"{change_average_money_value:.3f}% from last month")
         st.caption('A higher score indicates greater satisfaction with the investment.')
     with col3:
-        st.metric(label="Service Score", value=f"{this_average_service_score:.2f} / 5", delta=f"{change_average_service_score:.3f}% from last week")
+        st.metric(label="Service Score", value=f"{this_average_service_score:.2f} / 5", delta=f"{change_average_service_score:.3f}% from last month")
         st.caption('A higher score indicates greater satisfaction with services.')
     with col4:
-        st.metric(label="Total number of review", value=f"{this_review_count:.0f}", delta=f"+{change_review_count} reviews from last week")
+        st.metric(label="Total number of review", value=f"{this_review_count:.0f}", delta=f"{change_review_count} reviews from last month")
         st.caption('Total number of reviews from Air Quality.')
     st.markdown("&nbsp;")
 
