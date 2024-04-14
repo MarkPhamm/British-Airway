@@ -411,8 +411,10 @@ def main():
     change_review_count = review_count - previous_review_count
 
 
+
+
     # Display the percentages as a dashboard
-    st.header('General Metrics')
+    st.header('This Week Metrics')
     col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
     with col1:
         st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%", delta=f"{change_recommendation_percentage:.2f}% from last week")
@@ -426,6 +428,19 @@ def main():
     with col4:
         st.metric(label="Total number of review", value=f"{review_count:.0f}", delta=f"+{change_review_count} reviews from last week")
         st.caption('Total number of reviews from Air Quality.')
+    st.markdown("&nbsp;")
+
+    # Display the percentages as a dashboard
+    st.header('All Time Metrics')
+    col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
+    with col1:
+        st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%")
+    with col2:
+        st.metric(label="VFM Score", value=f"{average_money_value:.2f} / 5")
+    with col3:
+        st.metric(label="Service Score", value=f"{average_service_score:.2f} / 5")
+    with col4:
+        st.metric(label="Total number of review", value=f"{review_count:.0f}")
     st.markdown("&nbsp;")
 
     # Display the reviews
