@@ -2,11 +2,9 @@ from openai import OpenAI
 import pandas as pd
 import os
 from datetime import datetime
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import streamlit as st
 # see also python-decouple
-
-load_dotenv()
 
 
 current_date = datetime.now()
