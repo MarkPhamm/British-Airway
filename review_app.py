@@ -309,17 +309,17 @@ def main():
     # Name of the S3 bucket
     bucket_name = 'british-airway'
 
-    # Function to get the latest CSV file
-    def get_latest_csv_file(bucket_name):
+    # Function to get the two most recent CSV files
+    def get_recent_csv_files(bucket_name, num_files=2):
         csv_files = []
         response = s3_client.list_objects_v2(Bucket=bucket_name)
         for obj in response.get('Contents', []):
             if obj['Key'].endswith('.csv'):
                 csv_files.append({'Key': obj['Key'], 'LastModified': obj['LastModified']})
         
-        # Sort the files by last modified date in descending order
-        latest_csv_file = sorted(csv_files, key=lambda x: x['LastModified'], reverse=True)[0]
-        return latest_csv_file['Key']
+        # Sort the files by last modified date in descending order and get the top 'num_files' entries
+        recent_csv_files = sorted(csv_files, key=lambda x: x['LastModified'], reverse=True)[:num_files]
+        return [file['Key'] for file in recent_csv_files]
 
     # Function to read a CSV file from S3 into a DataFrame
     def read_csv_to_df(bucket_name, file_key):
@@ -329,11 +329,16 @@ def main():
         df = pd.read_csv(StringIO(csv_string))
         return df
 
-    # Get the latest CSV file
-    latest_csv_file = get_latest_csv_file(bucket_name)
+    # Get the two most recent CSV files
 
-    # Read the latest CSV file into a DataFrame
-    df = read_csv_to_df(bucket_name, latest_csv_file)
+    recent_csv_files = get_recent_csv_files(bucket_name)
+
+    # You can now loop through the file keys or handle them individually
+    # Example: Read the files into DataFrames
+    dataframes = [read_csv_to_df(bucket_name, file_key) for file_key in recent_csv_files]
+
+    df= dataframes[0]
+    previous_df = dataframes[1]
 
     # -----------------------------------------------------------
 
