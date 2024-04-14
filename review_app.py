@@ -480,12 +480,12 @@ def main():
         st.write(df.head(5))
     # -------------------------------------
     # Review Analysis
+    input = this_month_df.to_string(index = False)
     st.header('Customer Feedbacks for improvement')
     instruction =""" Here's the list of review for British Airway, extract negative aspect of BA in the review (use 5-10 bullet points) 
     Eg: BA has crammed as many seats in business, cabin felt cramped, The bedding was atrocious, an old scraggly blanket and I’ll fitting seat cover,... """
     instruction = st.text_input("Ask something about this month review")
-    if instruction:
-        st.write(open_ai.return_chatgpt_review_negative(this_month_df, instruction))
+    st.write(open_ai.return_chatgpt_review_negative(input, instruction))
     
     # -------------------------------------
     # Chart Breakdown
