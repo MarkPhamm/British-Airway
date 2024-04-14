@@ -30,7 +30,7 @@ def return_chatgpt_review(input, instruction):
 
     chat_completion = client.chat.completions.create(
         model=model,
-        max_tokens=100,
+        max_tokens=200,
         temperature=0,
         messages=[
             {"role": "system", "content": instruction},
