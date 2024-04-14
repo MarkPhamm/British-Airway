@@ -7,15 +7,6 @@ import streamlit as st
 # see also python-decouple
 
 
-current_date = datetime.now()
-
-df = pd.read_csv('dataset\clean_data_expand.csv')
-df['date_review'] = pd.to_datetime(df['date_review'])
-# Filter the DataFrame for records within the current month and year
-this_month_df = df.loc[(df['date_review'].dt.month == current_date.month) & (df['date_review'].dt.year == current_date.year)]
-this_month_negative_input = this_month_df.loc[this_month_df['recommended'] == False]['review'].to_string(index = False)
-this_month_positive_input = this_month_df.loc[this_month_df['recommended'] == True]['review'].to_string(index = False)
-
 # openai.api_key = os.environ.get("OPEN_AI")
 # openai_api_key = os.getenv("OPENAI_KEY")
 openai_api_key = st.secrets['OPENAI_KEY']
@@ -55,6 +46,3 @@ def return_chatgpt_review_positive(input):
         ],
     )
     return chat_completion.choices[0].message.content
-
-print(return_chatgpt_review_negative(input = this_month_negative_input))
-# print(return_chatgpt_review_positive(this_month_positive_input))
