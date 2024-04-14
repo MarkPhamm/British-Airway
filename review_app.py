@@ -418,10 +418,10 @@ def main():
         st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%", delta=f"{change_recommendation_percentage:.2f}% from last week")
         st.caption('A higher percentage indicates customers are more likely to recommend.')
     with col2:
-        st.metric(label="VFM Score", value=f"{average_money_value:.2f} / 5", delta= f"{change_average_money_value:.2f}% from last week")
+        st.metric(label="VFM Score", value=f"{average_money_value:.2f} / 5", delta= f"{change_average_money_value:.3f}% from last week")
         st.caption('A higher score indicates greater satisfaction with the investment.')
     with col3:
-        st.metric(label="Service Score", value=f"{average_service_score:.2f} / 5", delta=f"{change_average_service_score:.2f}% from last week")
+        st.metric(label="Service Score", value=f"{average_service_score:.2f} / 5", delta=f"{change_average_service_score:.3f}% from last week")
         st.caption('A higher score indicates greater satisfaction with services.')
     with col4:
         st.metric(label="Total number of review", value=f"{review_count:.0f}", delta=f"+{change_review_count} reviews from last week")
