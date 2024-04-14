@@ -415,7 +415,7 @@ def main():
     st.header('General Metrics')
     col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
     with col1:
-        st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%", delta="{change_recommendation_percentage}% from last week")
+        st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%", delta=f"{change_recommendation_percentage}% from last week")
         st.caption('A higher percentage indicates customers are more likely to recommend.')
     with col2:
         st.metric(label="VFM Score", value=f"{average_money_value:.2f} / 5", delta= "-0.2% from last week")
