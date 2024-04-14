@@ -10,7 +10,8 @@ from io import StringIO
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from openai import OpenAI
-from open_ai import return_chatgpt_review_negative
+import open_ai
+
 warnings.filterwarnings("ignore")
 
 # Function to create a bar chart of experience 
@@ -482,7 +483,7 @@ def main():
     # Review Analysis
     st.header('Customer Feedbacks for improvement')
     this_month_negative_input = this_month_df.loc[this_month_df['recommended'] == False]['review'].to_string(index = False)
-    st.write(return_chatgpt_review_negative(this_month_negative_input))
+    st.write(open_ai.return_chatgpt_review_negative(this_month_negative_input))
     
     # -------------------------------------
     # Chart Breakdown
