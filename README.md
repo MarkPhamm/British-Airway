@@ -33,6 +33,11 @@ This project will simulate a data team at British Airways, from ETL to Business 
 ### Data Source
 [Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways) is a robust platform for assessing British Airways' service quality through diverse customer reviews and ratings. Providing insights into cabin comfort, amenities, and overall satisfaction, enables customers to share feedback. However, the data's reliance on customer surveys may introduce bias.
 
+### Self-Sampling Bias Acknowledge
+**Self-Sampling bias:** The reviews of restaurants, hotels, cafes, and so on that you read on social media sites like Yelp are prone to bias because the people submitting them are not randomly selected; rather, they themselves have taken the initiative to write. This leads to self-selection bias — the people motivated to write reviews may be those who had poor experiences, may have an association with the establishment, or may simply be a different type of person from those who do not write reviews. Note that while self-selection samples can be unreliable indicators of the true state of affairs, they may be more reliable in simply comparing one establishment to a similar one; the same self-selection bias might apply to each.
+
+While analyzing reviews of British Airways, it's crucial to acknowledge the presence of self-selection sampling bias. Similar to social media platforms like Yelp, individuals who voluntarily submit reviews may have had extreme experiences, affiliations with the airline, or simply different motivations compared to those who do not provide feedback. Due to Self-sampling, bias, the KPI and review will be worse than the population. However, it's important to clarify that our aim is not to generalize findings about the entire population. Instead, we focus on identifying specific areas for improvement that British Airways can address.
+
 ### Cleaned Data
 - `Id`: Order of each review, where smaller numbers represent later reviews. (Ordinal, Int)
 - `Date review`: The date when the review was conducted. (Ordinal, Date)
