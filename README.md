@@ -14,9 +14,8 @@ Air Inequality presents a comprehensive platform for evaluating the quality of s
 ### Cleaned Data
 
 
-
-## TL; DR:
-**Problems:**
+# Business Problems and Solution Take Aways
+## Problems:
 
 **Problem 1:**
 - **Economy Customer Concerns:** Economy class customers prioritize staff services, while non-economy customers prioritize food and seat comfort.
@@ -28,13 +27,14 @@ Air Inequality presents a comprehensive platform for evaluating the quality of s
   - They are often solo or couple leisure travelers from the United Kingdom or the USA, suggesting they may require assistance with travel and navigating through airports.
                 ![Problem 1 Details](https://github.com/MarkPhamm/British-Airway/assets/99457952/665ff202-218a-4862-a130-98ce4c8584b9)
 
-**Solutions:**
+## Solutions:
 - Enhance staff training programs to improve customer interactions and service quality.
 - Increase staff presence and assistance at London airports, especially during peak travel times, to better support economy-class travelers.
 - Implement feedback mechanisms for customers to report negative staff experiences promptly, allowing for swift resolution and continuous improvement.
 
 **Problem 2:**
-- **Time Series Problems in 2017 and 2023**: Using the filter in Streamlit's [Review app](https://ba-review.streamlit.app/), we discover that the money value score and recommendation rate plummeted in 2017 and 2023 despite the fact that we have multiples review from those years.
+- **Time Series Problems in 2017 and 2023**: Using the filter in Streamlit's [Review app](https://ba-review.streamlit.app/), we discover that the money value score and recommendation rate plummeted in 2017 and 2023 although we have multiple reviews from those years.
+
 
 ## Team members
 
