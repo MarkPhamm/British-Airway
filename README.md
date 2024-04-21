@@ -1,4 +1,6 @@
 # British Airway Review (Phase 1)
+* Access the Streamlit website dashboard [here](https://ba-review.streamlit.app/)
+
 **End-to-end Analytics Project for British Airway:** Analyze Customer Experience
 This project will simulate a data team at British Airways, from ETL to Business Intelligence and Data Science. we will extract real-time data from [Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways), and perform 4 types of modern analytics to find insightful recommendations.
 
