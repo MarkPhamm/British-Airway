@@ -481,9 +481,9 @@ def main():
     # -------------------------------------
     # Review Analysis
     input = this_month_df.to_string(index = False)
-    st.header('Customer Feedbacks for improvement')
+    st.header('Chatbot')
     instruction ="""briefly describe the input data in 3 bullet points """
-    instruction = st.text_input("Ask something about this month review")
+    instruction = st.text_input("Ask something about this month data")
     st.write(open_ai.return_chatgpt_review(input, instruction))
     
     # -------------------------------------

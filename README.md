@@ -1,39 +1,10 @@
 # British Airway Review (Phase 1)
+* Access the Streamlit website dashboard [here](https://ba-review.streamlit.app/)
+
 **End-to-end Analytics Project for British Airway:** Analyze Customer Experience
 This project will simulate a data team at British Airways, from ETL to Business Intelligence and Data Science. we will extract real-time data from [Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways), and perform 4 types of modern analytics to find insightful recommendations.
 
 ![image](https://github.com/MarkPhamm/British-Airway/assets/99457952/919f1671-e640-4308-a908-8070585ded96)
-
-## About the data
-
-### Data Source
-Air Inequality presents a comprehensive platform for evaluating the quality of services provided by British Airways. Through a diverse range of customer reviews and ratings, the website offers valuable insights into various aspects of the airline's performance, including service quality, cabin comfort, onboard amenities, and overall customer satisfaction. Air Inequality serves as a platform where customers can provide feedback and reviews about their experiences with British Airways. While offering valuable insights into service quality and customer satisfaction, it's important to note that the data may be biased as it relies on customer surveys.
-
-### Cleaned Data
-
-
-
-## TL; DR:
-**Problems:**
-
-**Problem 1:**
-- **Economy Customer Concerns:** Economy class customers prioritize staff services, while non-economy customers prioritize food and seat comfort.
-  
-![Problem 1](https://github.com/MarkPhamm/British-Airway/assets/99457952/fad27d46-f9c1-4187-94af-02da65d3f10b)
-
-- **Specifics for Economy Class:**
-  - Customers with negative staff experiences (staff score <= 2) predominantly travel through London (Heathrow and Gatwick) airports.
-  - They are often solo or couple leisure travelers from the United Kingdom or the USA, suggesting they may require assistance with travel and navigating through airports.
-                ![Problem 1 Details](https://github.com/MarkPhamm/British-Airway/assets/99457952/665ff202-218a-4862-a130-98ce4c8584b9)
-
-**Solutions:**
-- Enhance staff training programs to improve customer interactions and service quality.
-- Increase staff presence and assistance at London airports, especially during peak travel times, to better support economy-class travelers.
-- Implement feedback mechanisms for customers to report negative staff experiences promptly, allowing for swift resolution and continuous improvement.
-
-**Problem 2:**
-- **Time Series Problems in 2017 and 2023**: Using the filter in Streamlit's [Review app](https://ba-review.streamlit.app/), we discover that the money value score and recommendation rate plummeted in 2017 and 2023 despite the fact that we have multiples review from those years.
-
 ## Team members
 
 * **Advisor/Mentor:** Offers guidance and oversight for the project.
@@ -57,12 +28,83 @@ Air Inequality presents a comprehensive platform for evaluating the quality of s
 * **DS Team:** Develops predictive models and analyzes the importance of different features.
   * [Robin Tran](https://www.linkedin.com/in/robin-tran/): Data Science at Mount Holyoke College
 
+## About the data
+
+### Data Source
+[Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways) is a robust platform for assessing British Airways' service quality through diverse customer reviews and ratings. Providing insights into cabin comfort, amenities, and overall satisfaction, enables customers to share feedback. However, the data's reliance on customer surveys may introduce bias.
+
+### Cleaned Data
+- `Id`: Order of each review, where smaller numbers represent later reviews. (Ordinal, Int)
+- `Date review`: The date when the review was conducted. (Ordinal, Date)
+- `Day review`: The day of the week when the review was conducted. (Discrete, Int)
+- `Month review`: The month when the review was conducted. (Ordinal, String)
+- `Month review num`: The numerical representation of the month when the review was conducted. (Discrete, Int)
+- `Year review`: The year when the review was conducted. (Discrete, Int)
+- `Verified`: Indicates whether the review was successfully verified or not. (Nominal, Boolean)
+- `Name`: Name of the passenger who provided the review. (Nominal, String)
+- `Month fly`: The month of the flight date. (Ordinal, String)
+- `Month fly num`: The numerical representation of the month of the flight date. (Discrete, Int)
+- `Year fly`: The year of the flight date. (Discrete, Int)
+- `Month year fly`: The month and year of the flight date. (Ordinal, Date)
+- `Country`: Nationality of the passenger. (Nominal, String)
+- `Aircraft`: Type of the airplane used for the flight. (Nominal, String)
+- `Type`: Purpose of the flight (e.g., business, leisure). (Nominal, String)
+- `Seat Type`: Class of the seat (e.g., Economy, Business). (Ordinal, String)
+- `Origin`: Departure location of the passenger. (Nominal, String)
+- `Destination`: Final destination of the passenger. (Nominal, String)
+- `Transit`: Location where the passenger was transited. (Nominal, String)
+- `Seat Comfort`: Passenger’s evaluation of seat comfort on a scale of 1 to 5. (Ordinal, Int)
+- `Cabin service`: Passenger’s evaluation of the cabin service on a scale of 1 to 5. (Ordinal, Int)
+- `Ground service`: Passenger’s evaluation of the ground service on a scale of 1 to 5. (Ordinal, Int)
+- `Wifi`: Passenger’s evaluation of the on-board wifi connection on a scale of 1 to 5. (Ordinal, Int)
+- `Money value`: Passenger's evaluation of how the flight experience corresponds to the money paid on a scale of 1 to 5. (Ordinal, Int)
+- `Score`: Average of the scores given by the passenger on seat comfort, cabin service, ground service, wifi, and money value. (Continuous, Float)
+- `Experience`: Overall rating of the flight experience categorized into poor, fair, and good. (Ordinal, String)
+- `Recommended`: Indicates whether the passenger would recommend the same flight experience. (Nominal, Boolean)
+- `Review`: Detailed feedback provided by the passenger regarding their flight experience. (Nominal, String)
+
+# Business Problems, Solutions, and Takeaways
+## Problems:
+
+### Problem 1:
+- **Economy Customer Concerns:** Economy class customers prioritize staff services, while non-economy customers prioritize food and seat comfort.
+![Problem 1](https://github.com/MarkPhamm/British-Airway/assets/99457952/fad27d46-f9c1-4187-94af-02da65d3f10b)
+
+#### Economy Class Drill Down:
+  Customers with negative staff experiences (staff score <= 2) have the following traits:
+  - Predominantly travel through London (Heathrow and Gatwick) airports.
+  - They are often solo or couple leisure travelers from the United Kingdom or the USA, suggesting they may require assistance with travel and navigating through airports.
+                ![Problem 1 Details](https://github.com/MarkPhamm/British-Airway/assets/99457952/665ff202-218a-4862-a130-98ce4c8584b9)
+  - 95% of the problems related to the customer not receiving enough help from the ground staff (Due to lack of staff) and complaining about the staff's attitude/unprofessionalism
+
+#### Solutions for problem 1:
+- Enhance staff training programs to improve customer interactions and service quality.
+- Increase staff presence and assistance at London airports, especially during peak travel times, to better support economy-class travelers.
+- Implement feedback mechanisms for customers to report negative staff experiences promptly, allowing for swift resolution and continuous improvement.
+
+
+### Problem 2 
+
+**Non-Economy Customer Concerns**: While Economy class customers prioritize staff services, non-economy customers prioritize food and seat comfort.
+
+#### Non-Economy Class Drill Down:**
+  Customers with negative food and seat comfort experience (food score or seat comfort score <= 2) have the following traits:
+  - Predominantly travel through London (Heathrow and Gatwick) airports.
+  - They are often experienced business travelers who have high expectations with the airlines
+  - They expected more from the service since they have paid more.
+  - Mostly complain about the seat layout in the Business Class (cramped feeling due to the seating arrangement) and food (The food served on the flight was limited in choice, poorly presented, and lacked quality, with one passenger even describing it as if it had fallen on the floor and been scooped back onto the plate.)
+
+#### Solutions for problem 2:**
+- **Revamp Seat Layout:** Implement a redesigned seating arrangement in Business Class that provides more space and comfort, alleviating the cramped feeling often complained about by customers.
+- **Enhance In-flight Dining Experience:** Elevate the quality and presentation of food offerings, ensuring a wider selection, better presentation, and higher quality ingredients to meet the expectations of experienced business travelers who have paid a premium for their service.
+ 
+
 ## Project Flow Chart
 
 ## Project Steps
 ### 1. Extract - Transform - Load (ETL) - Airline Quality ETL Pipeline
 
-This repository contains the implementation of an Extract, Transform, Load (ETL) pipeline that periodically scrapes customer reviews for British Airways from AirlineQuality.com. The data is processed and used for analytical and machine learning purposes. The pipeline is designed within the AWS Cloud environment, leveraging a combination of AWS Lambda, AWS S3, and Amazon Athena for robust, scalable, and efficient data handling.
+This repository contains the implementation of an Extract, Transform, Load (ETL) pipeline that periodically scrapes customer reviews for British Airways from AirlineQuality.com. The data is processed and used for analytical and machine-learning purposes. The pipeline is designed within the AWS Cloud environment, leveraging a combination of AWS Lambda, AWS S3, and Amazon Athena for robust, scalable, and efficient data handling.
 
 ![image](https://github.com/MarkPhamm/British-Airway/assets/88282475/cb0d9a6d-5c10-4754-b88a-5ace9474cb09)
 
@@ -123,15 +165,13 @@ This will further confirm our Hypothesis when doing EDA.
 #### 3.2 Classify London Staff Review 
 In this model, we will use Natural Language Processing (NLP) to classify London Staff problems into 3 categories: Staff's attitude, Lack of Staff, and Others
 
-### 4. Streamlit app building
+### 4. Streamlight app building
 Here's an overview dashboard app 
 * [Review app](https://ba-review.streamlit.app/)
 * Findings: Something wrong with BA in 2017 and 2023
 
 ### 5. Data Modelling and Power BI dashboard
 Data Model: 
-
-### Solution and Take Aways
 
 
 # British Airway Booking (Phase 2)
