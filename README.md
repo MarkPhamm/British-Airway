@@ -170,7 +170,7 @@ This will further confirm our Hypothesis when doing EDA.
 #### 3.2 Classify London Staff Review 
 In this model, we will use Natural Language Processing (NLP) to classify London Staff problems into 3 categories: Staff's attitude, Lack of Staff, and Others
 
-### 4. Streamlight app building
+### 4. Streamlit app building
 Here's an overview dashboard app 
 * [Review app](https://ba-review.streamlit.app/)
 * Findings: Something wrong with BA in 2017 and 2023
