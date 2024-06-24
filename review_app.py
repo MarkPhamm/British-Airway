@@ -10,7 +10,7 @@ from io import StringIO
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from openai import OpenAI
-import open_ai
+# import open_ai
 
 warnings.filterwarnings("ignore")
 
@@ -305,6 +305,26 @@ def create_combined_plot(df):
     )
     return fig
 
+# Function to get the two most recent CSV files
+def get_recent_csv_files(bucket_name, s3_client,  num_files=2):
+    csv_files = []
+    response = s3_client.list_objects_v2(Bucket=bucket_name)
+    for obj in response.get('Contents', []):
+        if obj['Key'].endswith('.csv'):
+            csv_files.append({'Key': obj['Key'], 'LastModified': obj['LastModified']})
+    
+    # Sort the files by last modified date in descending order and get the top 'num_files' entries
+    recent_csv_files = sorted(csv_files, key=lambda x: x['LastModified'], reverse=True)[:num_files]
+    return [file['Key'] for file in recent_csv_files]
+
+# Function to read a CSV file from S3 into a DataFrame
+def read_csv_to_df(bucket_name, s3_client, file_key):
+    csv_obj = s3_client.get_object(Bucket=bucket_name, Key=file_key)
+    body = csv_obj['Body']
+    csv_string = body.read().decode('utf-8')
+    df = pd.read_csv(StringIO(csv_string))
+    return df
+
 def main():
     # Initialize a session using Amazon S3
     aws_access_key_id = st.secrets['aws_access_key_id']
@@ -312,37 +332,17 @@ def main():
     s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
     # Name of the S3 bucket
-    bucket_name = 'british-airway'
-
-    # Function to get the two most recent CSV files
-    def get_recent_csv_files(bucket_name, num_files=2):
-        csv_files = []
-        response = s3_client.list_objects_v2(Bucket=bucket_name)
-        for obj in response.get('Contents', []):
-            if obj['Key'].endswith('.csv'):
-                csv_files.append({'Key': obj['Key'], 'LastModified': obj['LastModified']})
-        
-        # Sort the files by last modified date in descending order and get the top 'num_files' entries
-        recent_csv_files = sorted(csv_files, key=lambda x: x['LastModified'], reverse=True)[:num_files]
-        return [file['Key'] for file in recent_csv_files]
-
-    # Function to read a CSV file from S3 into a DataFrame
-    def read_csv_to_df(bucket_name, file_key):
-        csv_obj = s3_client.get_object(Bucket=bucket_name, Key=file_key)
-        body = csv_obj['Body']
-        csv_string = body.read().decode('utf-8')
-        df = pd.read_csv(StringIO(csv_string))
-        return df
+    bucket_name = 'new-british-airline'
 
     # Get the two most recent CSV files
 
-    recent_csv_files = get_recent_csv_files(bucket_name)
+    recent_csv_files = get_recent_csv_files(bucket_name, s3_client)
 
     # You can now loop through the file keys or handle them individually
     # Example: Read the files into DataFrames
-    dataframes = [read_csv_to_df(bucket_name, file_key) for file_key in recent_csv_files]
+    dataframes = [read_csv_to_df(bucket_name, s3_client, file_key) for file_key in recent_csv_files]
 
-    df= dataframes[0]
+    df = dataframes[0]
 
     # -----------------------------------------------------------
 
@@ -405,7 +405,7 @@ def main():
     average_service_score = df['score'].mean()
     review_count = len(df)
 
-    current_date = datetime.now()
+    current_date = datetime(2024, 3, 31)
 
     df['date_review'] = pd.to_datetime(df['date_review'])
     # Filter the DataFrame for records within the current month and year
@@ -438,6 +438,16 @@ def main():
     change_average_service_score = this_average_service_score - previous_average_service_score
     change_review_count = this_review_count - previous_review_count
 
+    # Last refresh date
+    st.text(F"Last Refresh: {current_date}")
+
+    # Self-selection bias acknowledgement
+    # Add the blog content
+    st.write("""
+    **Self-Sampling Bias:**
+    While analyzing reviews of British Airways, it's crucial to acknowledge the presence of self-selection sampling bias. Similar to social media platforms like Yelp, individuals who voluntarily submit reviews may have had extreme experiences, affiliations with the airline, or simply different motivations compared to those who do not provide feedback. Due to self-sampling bias, the KPI and review will be worse than the general population. However, it's important to clarify that our aim is not to generalize findings about the entire population. Instead, we focus on identifying specific areas for improvement that British Airways can address.
+    """)
+
     # Display the percentages as a dashboard
     st.header('All Time Metrics')
     col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
@@ -456,7 +466,7 @@ def main():
     st.markdown("&nbsp;")
 
     # Display the percentages as a dashboard
-    st.header('This month Metrics')
+    st.header(F'This Month Metrics ({current_date.strftime("%B - %Y")})')
     col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
     with col1:
         st.metric(label="Recommendation Percentage", value=f"{this_recommendation_percentage:.2f}%", delta=f"{change_recommendation_percentage:.2f}% from last month")
@@ -480,11 +490,11 @@ def main():
         st.write(df.head(5))
     # -------------------------------------
     # Review Analysis
-    input = this_month_df.to_string(index = False)
-    st.header('Chatbot')
-    instruction ="""briefly describe the input data in 3 bullet points """
-    instruction = st.text_input("Ask something about this month data")
-    st.write(open_ai.return_chatgpt_review(input, instruction))
+    # input = this_month_df.to_string(index = False)
+    # st.header('Chatbot')
+    # instruction ="""briefly describe the input data in 3 bullet points """
+    # instruction = st.text_input("Ask something about this month data")
+    # st.write(open_ai.return_chatgpt_review(input, instruction))
     
     # -------------------------------------
     # Chart Breakdown
@@ -530,8 +540,8 @@ def main():
     fig6 = create_plot_rating_distributions(df, rating_columns)
     st.plotly_chart(fig6, use_container_width=True, height=600, width=400)
     
-    # Time Series
-    st.subheader('Time Series')
+    # Time Intelligence
+    st.subheader('Time Intelligence')
     df['date_review'] = pd.to_datetime(df['date_review'])
 
     # Avg score and money_value by year line chart
