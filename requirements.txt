@@ -19,3 +19,4 @@ tenacity==8.2.3
 threadpoolctl==3.3.0
 tzdata==2024.1
 xlrd==2.0.1
+boto3 
