@@ -358,7 +358,7 @@ def main():
     country_filter = st.sidebar.multiselect('Country', df['country'].dropna().unique())
     origin_filter = st.sidebar.multiselect('Origin', df['origin'].dropna().unique())
     destination_filter = st.sidebar.multiselect('Destination', df['destination'].dropna().unique())
-    transit_filter = st.sidebar.multiselect('transit', df['transit'].dropna().unique(), default=None)
+    transit_filter = st.sidebar.multiselect('Transit', df['transit'].dropna().unique(), default=None)
     aircraft_1_filter = st.sidebar.multiselect('Aircraft 1', df['aircraft_1'].dropna().unique())
     aircraft_2_filter = st.sidebar.multiselect('Aircraft 2', df['aircraft_2'].dropna().unique())
     type_filter = st.sidebar.multiselect('Type', df['type'].dropna().unique())
