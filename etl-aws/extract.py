@@ -83,7 +83,7 @@ def main():
 
 
     df = pd.DataFrame(reviews_data) 
-    directory = "dataset"
+    directory = "data"
     # Save DataFrame to CSV
     df.to_csv(os.path.join(directory, "raw_data.csv"))
 
