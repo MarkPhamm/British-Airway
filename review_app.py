@@ -9,8 +9,7 @@ import boto3
 from io import StringIO
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from openai import OpenAI
-# import open_ai
+import open_ai
 
 warnings.filterwarnings("ignore")
 
@@ -331,6 +330,11 @@ def main():
     aws_secret_access_key = st.secrets['aws_secret_access_key']
     s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
+
+    # key_df = pd.read_csv('british-airway-user.csv', index_col=None)
+    # # Initialize a session using Amazon S3
+    # s3_client = boto3.client('s3', aws_access_key_id=key_df['Access key ID'][0], aws_secret_access_key=key_df['Secret access key'][0])
+
     # Name of the S3 bucket
     bucket_name = 'new-british-airline'
 
@@ -490,11 +494,11 @@ def main():
         st.write(df.head(5))
     # -------------------------------------
     # Review Analysis
-    # input = this_month_df.to_string(index = False)
-    # st.header('Chatbot')
-    # instruction ="""briefly describe the input data in 3 bullet points """
-    # instruction = st.text_input("Ask something about this month data")
-    # st.write(open_ai.return_chatgpt_review(input, instruction))
+    input = this_month_df.to_string(index = False)
+    st.header('Chatbot')
+    instruction ="""briefly describe the input data in 3 bullet points """
+    instruction = st.text_input("Ask something about this month data")
+    st.write(open_ai.return_chatgpt_review(input, instruction))
     
     # -------------------------------------
     # Chart Breakdown
