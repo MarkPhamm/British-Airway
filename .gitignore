@@ -1,3 +1,4 @@
 british-airway-user.csv
 .env
 /.venv
+**/__pycache__/
