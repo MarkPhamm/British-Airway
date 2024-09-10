@@ -3,8 +3,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-openai_api_key = os.getenv("OPENAI_KEY")
-# openai_api_key = st.secrets['OPENAI_KEY']
+# openai_api_key = os.getenv("OPENAI_KEY")
+openai_api_key = st.secrets['OPENAI_KEY']
 model = "gpt-3.5-turbo-0125"
 
 client = OpenAI(
