@@ -77,15 +77,11 @@ def main():
             # Append the review data dictionary to the reviews_data list
             reviews_data.append(review_data)
 
-    print("Reviews Data:")
-    for review_data in reviews_data:
-        print(review_data)
-
-
     df = pd.DataFrame(reviews_data) 
     directory = "data"
+    
     # Save DataFrame to CSV
-    df.to_csv(os.path.join(directory, "raw_data.csv"))
+    df.to_csv(os.path.join(directory, "raw_data.csv"), index = False)
 
 if __name__ == "__main__":
     main()

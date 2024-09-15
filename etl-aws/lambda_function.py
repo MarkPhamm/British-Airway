@@ -93,13 +93,12 @@ def main():
         
     # cleaning
     df = pd.DataFrame(reviews_data)
-    cleaned_df = data_cleaning.main(df)    
+    cleaned_df = data_cleaning.main()    
 
     # feature engineering
-    engineered_df = feature_engineering.main(cleaned_df)
+    engineered_df = feature_engineering.main()
     
     # upload to S3
-    
     
     # S3 Bucket details
     bucket_name = 'british-airway'  # Replace with your S3 bucket name

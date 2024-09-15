@@ -100,12 +100,6 @@ def create_id(df):
 
 # Rename columns
 def rename_columns(df):
-    # df = df.rename(columns={
-    #     'verified': 'Verified',
-    #     'review': 'Review',
-    #     'customer_names': 'Customer Name',
-    #     'countries': 'Country'
-    # })
     new_column_names = {
                         'Dates Review': 'date_review',
                         'Day Review': 'day_review',
@@ -140,37 +134,11 @@ def reorder_columns(df):
     'seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi', 'money_value', 'recommended','review']]
     return df
 
-# def format_column(df):
-#     new_column_names = {'ID':'id',
-#                     'Dates Review': 'date_review',
-#                     'Day Review': 'day_review',
-#                     'Month Review': 'month_review',
-#                    'Month Review Number': 'month_review_num',
-#                    'Year Review': 'year_review',
-#                    'Verified': 'verified',
-#                    'Customer Name':'name',
-#                    'Month Flown': 'month_fly',
-#                    'Month Flown Number': 'month_fly_num',
-#                     'Year Flown':'year_fly',
-#                    'Month Year Flown': 'month_year_fly',
-#                    'Country': 'country',
-#                    'Aircraft': 'aircraft',
-#                    'Type Of Traveller': 'type',
-#                    'Seat Type': 'seat_type',
-#                    'Route': 'route',
-#                    'Seat Comfort': 'seat_comfort',
-#                    'Cabin Staff Service': 'cabit_serv',
-#                    'Food & Beverages': 'food',
-#                    'Ground Service': 'ground_service',
-#                    'Wifi & Connectivity': 'wifi',
-#                    'Value For Money': 'money_value',
-#                    'Recommended': 'recommended',
-#                    'Review': 'review'}
-#     df.rename(columns=new_column_names, inplace=True)
-#     return df
+def main():
+    directory = "data"
+    # Save DataFrame to CSV
+    df = pd.read_csv(os.path.join(directory, "raw_data.csv"))
 
-
-def main(df):
     df = clean_country(df)
     df = clean_review(df)
     df = clean_date_review(df)
@@ -179,9 +147,10 @@ def main(df):
     df = create_id(df)
     df = rename_columns(df)
     df = reorder_columns(df)
-    # df = format_column(df)
-    # Drop the first column by its positional index
-    # df.drop(df.columns[0], axis=1, inplace=True)
-    print(df.dtypes)
+
+    df.to_csv(os.path.join(directory, "clean_data.csv"), index = False)
 
     return df
+
+if __name__ == "__main__":
+    main()
