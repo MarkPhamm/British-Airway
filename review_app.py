@@ -9,7 +9,7 @@ import boto3
 from io import StringIO
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import open_ai
+# import open_ai
 
 warnings.filterwarnings("ignore")
 
@@ -493,11 +493,11 @@ def main():
         st.write(df.head(5))
     # -------------------------------------
     # Review Analysis
-    input = this_month_df.to_string(index = False)
-    st.header('Chatbot')
-    instruction ="""briefly describe the input data in 3 bullet points """
-    instruction = st.text_input("Ask something about this month data")
-    st.write(open_ai.return_chatgpt_review(input, instruction))
+    # input = this_month_df.to_string(index = False)
+    # st.header('Chatbot')
+    # instruction ="""briefly describe the input data in 3 bullet points """
+    # instruction = st.text_input("Ask something about this month data")
+    # st.write(open_ai.return_chatgpt_review(input, instruction))
     
     # -------------------------------------
     # Chart Breakdown
