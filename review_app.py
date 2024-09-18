@@ -414,7 +414,7 @@ def main():
     average_service_score = df['score'].mean()
     review_count = len(df)
 
-    current_date = datetime.datetime.now()
+    current_date = datetime.now()
 
     df['date_review'] = pd.to_datetime(df['date_review'])
     # Filter the DataFrame for records within the current month and year
