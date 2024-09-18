@@ -347,7 +347,7 @@ def read_df_from_s3():
     return dataframes[0]
 
 def read_df_from_csv():
-    df = pd.read_csv("data\processed_data.csv")
+    df = pd.read_csv("data/processed_data.csv")
     return df
 
 def main():
