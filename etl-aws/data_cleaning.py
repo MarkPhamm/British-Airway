@@ -90,7 +90,7 @@ def clean_date_flown(df):
 
 # Clean Review Column: Trim leading spaces in the 'Review' column
 def clean_space(df):
-    df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+    df = df.map(lambda x: x.strip() if isinstance(x, str) else x)
     return df
 
 def create_id(df):
@@ -128,16 +128,13 @@ def rename_columns(df):
     return df
 
 # Reorder Columns
-def reorder_columns(df):
-    df = df[['id','verified','date_review', 'day_review', 'month_review', 'month_review_num', 'year_review', 'verified','name', 
+def reorder_columns_before_fe(df):
+    df = df[['id','verified','date_review', 'day_review', 'month_review', 'month_review_num', 'year_review','name', 
     'month_fly', 'month_fly_num', 'year_fly', 'month_year_fly', 'country', 'aircraft', 'type', 'seat_type', 'route', 
     'seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi', 'money_value', 'recommended','review']]
     return df
 
-def main():
-    directory = "data"
-    # Save DataFrame to CSV
-    df = pd.read_csv(os.path.join(directory, "raw_data.csv"))
+def transform(df):
 
     df = clean_country(df)
     df = clean_review(df)
@@ -146,8 +143,15 @@ def main():
     df = clean_space(df)
     df = create_id(df)
     df = rename_columns(df)
-    df = reorder_columns(df)
+    df = reorder_columns_before_fe(df)
 
+    return df
+
+def main():
+    directory = "data"
+    # Save DataFrame to CSV
+    df = pd.read_csv(os.path.join(directory, "raw_data.csv"))
+    df = transform(df)
     df.to_csv(os.path.join(directory, "clean_data.csv"), index = False)
 
     return df

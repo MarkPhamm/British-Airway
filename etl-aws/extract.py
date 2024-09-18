@@ -4,15 +4,14 @@ import requests
 import pandas as pd
 import os
 
-def main():
+def extract(number_of_pages):
     base_url = "https://www.airlinequality.com/airline-reviews/british-airways"
-    pages = 100
+    number_of_pages = number_of_pages
     page_size = 100
 
     reviews_data = []
 
-    for i in range(1, pages + 1): 
-
+    for i in range(1, number_of_pages + 1): 
         print(f"Scraping page {i}")
 
         # Create URL to collect links from paginated data
@@ -43,7 +42,7 @@ def main():
                 review_data['customer_names'] = customer_name_tag.text.strip()
 
             # Extracting country
-            country = review.find(text=lambda text: text and '(' in text and ')' in text)
+            country = review.find(string=lambda string: string and '(' in string and ')' in string)
             if country:
                 country = country.strip('()')
             else:
@@ -78,10 +77,11 @@ def main():
             reviews_data.append(review_data)
 
     df = pd.DataFrame(reviews_data) 
-    directory = "data"
-    
-    # Save DataFrame to CSV
-    df.to_csv(os.path.join(directory, "raw_data.csv"), index = False)
+    df.to_csv("data/raw_data.csv", index = False)
+    return df
+
+def main():
+    extract(40)
 
 if __name__ == "__main__":
     main()

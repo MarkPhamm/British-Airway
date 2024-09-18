@@ -107,7 +107,7 @@ def replace_yes_no_with_bool(df, column):
     df[column] = df[column].replace({'yes': True, 'no': False})
     return df
 
-def reorder_columns(df):
+def reorder_columns_after_fe(df):
     df = df[['id', 'date_review', 'day_review', 'month_review', 'month_review_num',
        'year_review', 'verified', 'name', 'month_fly', 'month_fly_num',
        'year_fly', 'month_year_fly', 'country', 'aircraft','aircraft_1',
@@ -117,11 +117,8 @@ def reorder_columns(df):
     return df
 
 
-def main():
-    directory = "data"
-    # Save DataFrame to CSV
-    df = pd.read_csv(os.path.join(directory, "clean_data.csv"))
-
+def feature_engineer(df):
+    # change this all to function
     df = calculate_score(df)
     df = clean_route(df)
     df = split_aircraft_column(df)
@@ -130,7 +127,14 @@ def main():
     df = calculate_experience(df)
     df = calculate_service_score(df)
     df = replace_yes_no_with_bool(df, 'recommended')
-    df = reorder_columns(df)
+    df = reorder_columns_after_fe(df)
+    return df
+
+def main():
+    directory = "data"
+    # Save DataFrame to CSV
+    df = pd.read_csv(os.path.join(directory, "clean_data.csv"))
+    feature_engineer(df)
 
     df.to_csv(os.path.join(directory, "processed_data.csv"), index = False)
     return df
