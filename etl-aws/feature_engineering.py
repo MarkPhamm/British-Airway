@@ -134,7 +134,7 @@ def main():
     directory = "data"
     # Save DataFrame to CSV
     df = pd.read_csv(os.path.join(directory, "clean_data.csv"))
-    feature_engineer(df)
+    df = feature_engineer(df)
 
     df.to_csv(os.path.join(directory, "processed_data.csv"), index = False)
     return df
