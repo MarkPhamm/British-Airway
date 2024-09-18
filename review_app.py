@@ -324,7 +324,7 @@ def read_csv_to_df(bucket_name, s3_client, file_key):
     df = pd.read_csv(StringIO(csv_string))
     return df
 
-def main():
+def read_df_from_s3():
     # Initialize a session using Amazon S3
     aws_access_key_id = st.secrets['aws_access_key_id']
     aws_secret_access_key = st.secrets['aws_secret_access_key']
@@ -344,8 +344,14 @@ def main():
     # You can now loop through the file keys or handle them individually
     # Example: Read the files into DataFrames
     dataframes = [read_csv_to_df(bucket_name, s3_client, file_key) for file_key in recent_csv_files]
+    return dataframes[0]
 
-    df = dataframes[0]
+def read_df_from_csv():
+    df = pd.read_csv("data\processed_data.csv")
+    return df
+
+def main():
+    df = read_df_from_csv()
 
     # -----------------------------------------------------------
 
@@ -408,7 +414,7 @@ def main():
     average_service_score = df['score'].mean()
     review_count = len(df)
 
-    current_date = datetime(2024, 3, 31)
+    current_date = datetime.datetime.now()
 
     df['date_review'] = pd.to_datetime(df['date_review'])
     # Filter the DataFrame for records within the current month and year
