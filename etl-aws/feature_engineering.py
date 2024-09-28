@@ -101,6 +101,7 @@ def replace_yes_no_with_bool(df: pd.DataFrame, column: str) -> pd.DataFrame:
         pd.DataFrame: The modified DataFrame with 'Yes' and 'No' replaced with True and False respectively.
     """
     df[column] = df[column].replace({'yes': True, 'no': False})
+    df[column] = df[column].astype('boolean')
     return df
 
 def reorder_columns_after_fe(df: pd.DataFrame) -> pd.DataFrame:

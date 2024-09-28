@@ -61,7 +61,7 @@ def clean_date_flown(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def clean_space(df: pd.DataFrame) -> pd.DataFrame:
-    return df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+    return df.map(lambda x: x.strip() if isinstance(x, str) else x)
 
 def create_id(df: pd.DataFrame) -> pd.DataFrame:
     df = df.sort_values(by='Dates Review', ascending=False)
