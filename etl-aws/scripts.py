@@ -1,5 +1,6 @@
 import logging
 from typing import NoReturn
+import time
 
 import extract
 import data_cleaning
@@ -9,6 +10,7 @@ def setup_logging() -> None:
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def run_etl_pipeline() -> NoReturn:
+    start_time = time.time()
     try:
         logging.info("Starting ETL pipeline")
         
@@ -21,7 +23,9 @@ def run_etl_pipeline() -> NoReturn:
         logging.info("Performing feature engineering")
         feature_engineering.main()
         
-        logging.info("ETL pipeline completed successfully")
+        end_time = time.time()
+        total_time = end_time - start_time
+        logging.info(f"ETL pipeline completed successfully in {total_time:.2f} seconds")
     except Exception as e:
         logging.error(f"An error occurred during the ETL process: {str(e)}")
         raise
