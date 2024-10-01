@@ -175,14 +175,6 @@ Here's an overview dashboard app
 * [Review app](https://ba-review.streamlit.app/)
 * Findings: Something wrong with BA in 2017 and 2023
 
-### 5. Data Modelling and Power BI dashboard
-Data Model: 
-
-
-# British Airway Booking (Phase 2)
-We have received extra British Airways booking data (`booking_data.csv`) and will do further analysis on this
-
-
 
 
 
