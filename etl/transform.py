@@ -87,7 +87,7 @@ def rename_columns(df: pd.DataFrame) -> pd.DataFrame:
         'Seat Type': 'seat_type',
         'Route': 'route',
         'Seat Comfort': 'seat_comfort',
-        'Cabin Staff Service': 'cabit_serv',
+        'Cabin Staff Service': 'cabin_serv',
         'Food & Beverages': 'food',
         'Ground Service': 'ground_service',
         'Wifi & Connectivity': 'wifi',
@@ -100,7 +100,7 @@ def reorder_columns_before_fe(df: pd.DataFrame) -> pd.DataFrame:
     column_order = [
         'id', 'verified', 'date_review', 'day_review', 'month_review', 'month_review_num', 'year_review',
         'name', 'month_fly', 'month_fly_num', 'year_fly', 'month_year_fly', 'country', 'aircraft', 'type',
-        'seat_type', 'route', 'seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi', 'money_value',
+        'seat_type', 'route', 'seat_comfort', 'cabin_serv', 'food', 'ground_service', 'wifi', 'money_value',
         'recommended', 'review'
     ]
     return df[column_order]
@@ -117,7 +117,7 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def calculate_score(df: pd.DataFrame) -> pd.DataFrame:
-    df['score'] = df[['seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi']].mean(axis=1)
+    df['score'] = df[['seat_comfort', 'cabin_serv', 'food', 'ground_service', 'wifi']].mean(axis=1)
     return df
 
 def clean_route(df: pd.DataFrame) -> pd.DataFrame:
@@ -190,7 +190,7 @@ def calculate_experience(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def calculate_service_score(df: pd.DataFrame) -> pd.DataFrame:
-    df['score'] = df[['seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi']].mean(axis=1)
+    df['score'] = df[['seat_comfort', 'cabin_serv', 'food', 'ground_service', 'wifi']].mean(axis=1)
     return df
 
 def replace_yes_no_with_bool(df: pd.DataFrame, column: str) -> pd.DataFrame:
@@ -205,7 +205,7 @@ def reorder_columns_after_fe(df: pd.DataFrame) -> pd.DataFrame:
         'year_review', 'verified', 'name', 'month_fly', 'month_fly_num',
         'year_fly', 'month_year_fly', 'country', 'aircraft', 'aircraft_1',
         'aircraft_2', 'type', 'seat_type', 'route', 'origin', 'destination', 'transit', 
-        'seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi', 'money_value', 
+        'seat_comfort', 'cabin_serv', 'food', 'ground_service', 'wifi', 'money_value', 
         'score', 'experience', 'recommended', 'review'
     ]
     return df[column_order]
