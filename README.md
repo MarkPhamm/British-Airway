@@ -1,8 +1,15 @@
+Access our Streamlit [Dashboard Website](https://ba-review.streamlit.app/)
+
 # British Airway Review (Phase 1)
-* Access our Streamlit [Dashboard Website](https://ba-review.streamlit.app/)
 
 **End-to-end Analytics Project for British Airway:** Analyze Customer Experience
 This project will simulate a data team at British Airways, from ETL to Business Intelligence and Data Science. We will extract real-time data from [Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways), and perform 4 types of modern analytics to find insightful recommendations.
+
+# British Airway Review (Phase 2)
+
+**RAG chatbot for British Airway:** Analyze Customer Review with a RAG chatbot
+The **RAG Chatbot for British Airways** utilizes cutting-edge technology stacks like **Chroma DB** and **LangChain**. **Chroma DB** serves as the vector database, enabling efficient storage and retrieval of customer review embeddings. **LangChain** powers the chatbot's integration of retrieval and generative AI, allowing for contextually accurate responses. This combination ensures fast, intelligent analysis of customer reviews, enhancing British Airways' ability to address feedback and improve customer satisfaction.
+
 
 ![image](https://github.com/MarkPhamm/British-Airway/assets/99457952/919f1671-e640-4308-a908-8070585ded96)
 ## Team members
@@ -174,14 +181,6 @@ In this model, we will use Natural Language Processing (NLP) to classify London 
 Here's an overview dashboard app 
 * [Review app](https://ba-review.streamlit.app/)
 * Findings: Something wrong with BA in 2017 and 2023
-
-### 5. Data Modelling and Power BI dashboard
-Data Model: 
-
-
-# British Airway Booking (Phase 2)
-We have received extra British Airways booking data (`booking_data.csv`) and will do further analysis on this
-
 
 
 
