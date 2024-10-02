@@ -5,11 +5,14 @@ importlib-metadata==8.0.0
 importlib-resources==6.4.0
 ipykernel==6.29.5
 jaraco.collections==5.1.0
-matplotlib==3.8.3
 openai==1.41.0
 pip-chill==1.0.3
 plotly==5.19.0
 scikit-learn==1.4.1.post1
+seaborn==0.13.2
 streamlit==1.37.1
+textblob==0.18.0.post0
 tomli==2.0.1
+wordcloud==1.9.3
+xgboost==2.1.1
 xlrd==2.0.1
