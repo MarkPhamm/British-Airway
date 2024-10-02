@@ -511,10 +511,11 @@ def main():
 
     st.subheader('Experience Breakdown')
 
-    breakdown_column = st.selectbox(
+    breakdown_option = st.selectbox(
     "Select the category for breakdown:",
-    options=['type', 'seat_type']  
+    options=['experience type', 'seat type']  
     )
+    breakdown_column = 'type' if breakdown_option == 'experience type' else 'seat_type'
 
     # Experience breakdown
     fig1 = create_experience_chart(df, breakdown_column)
@@ -545,7 +546,7 @@ def main():
     st.plotly_chart(fig5, use_container_width=True)
 
     # Ratings boxplots
-    rating_columns = ['seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi']
+    rating_columns = ['seat_comfort', 'cabin_serv', 'food', 'ground_service', 'wifi']
     fig6 = create_plot_rating_distributions(df, rating_columns)
     st.plotly_chart(fig6, use_container_width=True, height=600, width=400)
     
@@ -565,7 +566,7 @@ def main():
     st.plotly_chart(fig10, use_container_width=True)
 
     # Ratings by year
-    service_columns = ['seat_comfort', 'cabit_serv', 'food', 'ground_service', 'wifi'] 
+    service_columns = ['seat_comfort', 'cabin_serv', 'food', 'ground_service', 'wifi'] 
     service_to_plot = st.selectbox('Select a service to plot:', service_columns)
     fig9 = create_service_rating_distribution_chart(df, service_to_plot)
     fig9.update_layout(height=600)
