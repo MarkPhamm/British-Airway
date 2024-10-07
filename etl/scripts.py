@@ -44,7 +44,7 @@ def run_etl_pipeline(upload_to_s3: bool) -> NoReturn:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run ETL pipeline")
-    parser.add_argument("--upload_to_s3", type=bool, default=False, help="Upload data to S3 (default: False)")
+    parser.add_argument("--upload_to_s3", type=bool, default=True, help="Upload data to S3 (default: False)")
     args = parser.parse_args()
 
     setup_logging()
