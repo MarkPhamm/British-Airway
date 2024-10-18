@@ -73,7 +73,7 @@ def find_relevant_entries_from_chroma_db(query):
 # Function to generate a GPT response
 def generate_gpt_response(user_query, chroma_result, client):
     '''
-    Generate a response using GPT model based on user query and related information.
+    Generate an augmented response using GPT model based on user query and related information.
 
     See the link below for further information on crafting prompts:
     https://github.com/openai/openai-python    
@@ -83,24 +83,16 @@ def generate_gpt_response(user_query, chroma_result, client):
         chroma_result (str): Related documents retrieved from the database based on the user query
 
     Returns:
-        str: A formatted string containing both naive and augmented responses
+        str: The augmented response
     '''    
     
-    # Generate both naive and augmented responses in a single API call
+    # Generate only the augmented response in a single API call
     combined_prompt = f"""User query: {user_query}
 
-    Please provide two responses:
-    1. A naive response without any additional context.
-    2. An augmented response considering the following related information from our database:
+    Please provide an augmented response considering the following related information from our database:
     {chroma_result}
 
     Format your response as follows:
-    **Naive Response**
-
-    [Your naive response here]
-
-    -------------------------
-
     **Augmented Response**
 
     [Your augmented response here]
@@ -108,12 +100,12 @@ def generate_gpt_response(user_query, chroma_result, client):
     response = client.chat.completions.create(
         model=chatbot_model,
         messages=[
-            {"role": "system", "content": "You are a helpful assistant capable of providing both naive and context-aware responses."},
+            {"role": "system", "content": "You are a helpful assistant for British Airways analyzing customer reviews."},
             {"role": "user", "content": combined_prompt}
         ]
     )
 
-    return response.choices[0].message.content
+    return response.choices[0].message.content.split("**Augmented Response**")[1].strip()
 
 def log_response_time(query, response_time, is_first_prompt):
     """
