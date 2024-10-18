@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import os 
+import os,sys
 import warnings
 import plotly.express as px
 import plotly.graph_objects as go
@@ -9,9 +9,62 @@ import boto3
 from io import StringIO
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-# import open_ai
+import pygwalker as pyg
+from pygwalker.api.streamlit import StreamlitRenderer
 
+from dotenv import load_dotenv
+load_dotenv('.env')
+aws_access_key_id = os.getenv('aws_access_key_id')
+aws_secret_access_key = os.getenv('aws_secret_access_key')
+current_date = datetime.now()
+
+import chatbot
+
+deploy = True
+if deploy:
+    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+    __import__('pysqlite3')
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+    aws_access_key_id = st.secrets['aws_access_key_id']
+    aws_secret_access_key = st.secrets['aws_secret_access_key']
+
+# import open_ai
 warnings.filterwarnings("ignore")
+
+# Function to get the two most recent CSV files
+def get_recent_csv_files(bucket_name, s3_client,  num_files=2):
+    csv_files = []
+    response = s3_client.list_objects_v2(Bucket=bucket_name)
+    for obj in response.get('Contents', []):
+        if obj['Key'].endswith('.csv'):
+            csv_files.append({'Key': obj['Key'], 'LastModified': obj['LastModified']})
+
+# Function to read a CSV file from S3 into a DataFrame
+def read_csv_to_df(bucket_name, s3_client, file_key):
+    csv_obj = s3_client.get_object(Bucket=bucket_name, Key=file_key)
+    body = csv_obj['Body']
+    csv_string = body.read().decode('utf-8')
+    df = pd.read_csv(StringIO(csv_string))
+    return df
+
+def read_df_from_s3():
+    s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
+    # Name of the S3 bucket
+    bucket_name = 'new-british-airline'
+
+    # Get the two most recent CSV files
+
+    recent_csv_files = get_recent_csv_files(bucket_name, s3_client)
+
+    # You can now loop through the file keys or handle them individually
+    # Example: Read the files into DataFrames
+    dataframes = [read_csv_to_df(bucket_name, s3_client, file_key) for file_key in recent_csv_files]
+    return dataframes[0]
+
+def read_df_from_csv():
+    df = pd.read_csv("data/processed_data.csv")
+    return df
 
 # Function to create a bar chart of experience 
 def create_experience_chart(df, breakdown_column):
@@ -304,276 +357,237 @@ def create_combined_plot(df):
     )
     return fig
 
-# Function to get the two most recent CSV files
-def get_recent_csv_files(bucket_name, s3_client,  num_files=2):
-    csv_files = []
-    response = s3_client.list_objects_v2(Bucket=bucket_name)
-    for obj in response.get('Contents', []):
-        if obj['Key'].endswith('.csv'):
-            csv_files.append({'Key': obj['Key'], 'LastModified': obj['LastModified']})
-    
+@st.cache_resource
+def get_pyg_app(df: pd.DataFrame) -> StreamlitRenderer:
+    """Get the Pygwalker app instance."""
+    return StreamlitRenderer(df)
     # Sort the files by last modified date in descending order and get the top 'num_files' entries
     recent_csv_files = sorted(csv_files, key=lambda x: x['LastModified'], reverse=True)[:num_files]
     return [file['Key'] for file in recent_csv_files]
 
-# Function to read a CSV file from S3 into a DataFrame
-def read_csv_to_df(bucket_name, s3_client, file_key):
-    csv_obj = s3_client.get_object(Bucket=bucket_name, Key=file_key)
-    body = csv_obj['Body']
-    csv_string = body.read().decode('utf-8')
-    df = pd.read_csv(StringIO(csv_string))
-    return df
-
-def read_df_from_s3():
-    # Initialize a session using Amazon S3
-    aws_access_key_id = st.secrets['aws_access_key_id']
-    aws_secret_access_key = st.secrets['aws_secret_access_key']
-    s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-
-    # key_df = pd.read_csv('british-airway-user.csv', index_col=None)
-    # # Initialize a session using Amazon S3
-    # s3_client = boto3.client('s3', aws_access_key_id=key_df['Access key ID'][0], aws_secret_access_key=key_df['Secret access key'][0])
-
-    # Name of the S3 bucket
-    bucket_name = 'new-british-airline'
-
-    # Get the two most recent CSV files
-
-    recent_csv_files = get_recent_csv_files(bucket_name, s3_client)
-
-    # You can now loop through the file keys or handle them individually
-    # Example: Read the files into DataFrames
-    dataframes = [read_csv_to_df(bucket_name, s3_client, file_key) for file_key in recent_csv_files]
-    return dataframes[0]
-
-def read_df_from_csv():
-    df = pd.read_csv("data/processed_data.csv")
-    return df
-
-def main():
-    df = read_df_from_csv()
-
-    # -----------------------------------------------------------
-
-    df['date_review'] = pd.to_datetime(df['date_review']).dt.date
-
-    # Set page configuration
-    st.set_page_config(layout="wide")
-
-    # Slicers
-    st.sidebar.title('General filters')
-    verified_filter = st.sidebar.multiselect('Verified', df['verified'].dropna().unique(), default=None)
-    recommended_filter = st.sidebar.multiselect('Recommended', df['recommended'].dropna().unique(), default=None)
-    country_filter = st.sidebar.multiselect('Country', df['country'].dropna().unique())
-    origin_filter = st.sidebar.multiselect('Origin', df['origin'].dropna().unique())
-    destination_filter = st.sidebar.multiselect('Destination', df['destination'].dropna().unique())
-    transit_filter = st.sidebar.multiselect('Transit', df['transit'].dropna().unique(), default=None)
-    aircraft_1_filter = st.sidebar.multiselect('Aircraft 1', df['aircraft_1'].dropna().unique())
-    aircraft_2_filter = st.sidebar.multiselect('Aircraft 2', df['aircraft_2'].dropna().unique())
-    type_filter = st.sidebar.multiselect('Type', df['type'].dropna().unique())
-    seat_type_filter = st.sidebar.multiselect('Seat Type', df['seat_type'].dropna().unique())
-    experience_filter = st.sidebar.multiselect('Experience', df['experience'].dropna().unique())
-
-    st.sidebar.title('Datetime Filters')
-    month_review_filter = st.sidebar.multiselect('Month of Review', range(1, 13), default=list(range(1, 13)))
-    year_review_filter = st.sidebar.multiselect('Year of Review', range(min(df['date_review']).year, max(df['date_review']).year + 1), default=list(range(min(df['date_review']).year, max(df['date_review']).year + 1)))
-
-    def filter_data(df):
-        # Filter the DataFrame
-        if (verified_filter or recommended_filter or country_filter or origin_filter or destination_filter or transit_filter or aircraft_1_filter or aircraft_2_filter or type_filter or seat_type_filter or experience_filter or month_review_filter or year_review_filter):
-            filtered_df = df[
-                (df['verified'].isin(verified_filter) if verified_filter else True) &
-                (df['recommended'].isin(recommended_filter) if recommended_filter else True) &
-                (df['country'].isin(country_filter) if country_filter else True) &
-                (df['origin'].isin(origin_filter) if origin_filter else True) &
-                (df['destination'].isin(destination_filter) if destination_filter else True) &
-                (df['transit'] == transit_filter if transit_filter else True) &
-                (df['aircraft_1'].isin(aircraft_1_filter) if aircraft_1_filter else True) &
-                (df['aircraft_2'].isin(aircraft_2_filter) if aircraft_2_filter else True) &
-                (df['type'].isin(type_filter) if type_filter else True) &
-                (df['seat_type'].isin(seat_type_filter) if seat_type_filter else True) &
-                (df['experience'].isin(experience_filter) if experience_filter else True) &
-                (df['month_review_num'].isin(month_review_filter) if month_review_filter else True) &
-                (df['year_review'].isin(year_review_filter) if year_review_filter else True)
-            ]
-            return filtered_df
-        else:
-            return df
-        
-    df = filter_data(df)
-
-    # Streamlit app
-    st.title('Flight Reviews')
-
-    # -------------------------------------
-    # Metrics Breakdown
-
-    # Calculate general metrics
+def calculate_general_metrics(df):
     recommendation_percentage = df['recommended'].mean() * 100
     average_money_value = df['money_value'].mean()
     average_service_score = df['score'].mean()
     review_count = len(df)
+    return recommendation_percentage, average_money_value, average_service_score, review_count
 
+def filter_current_month(df):
     current_date = datetime.now()
-
     df['date_review'] = pd.to_datetime(df['date_review'])
-    # Filter the DataFrame for records within the current month and year
-    this_month_df = df.loc[(df['date_review'].dt.month == current_date.month) & (df['date_review'].dt.year == current_date.year)]
+    return df.loc[(df['date_review'].dt.month == current_date.month) & (df['date_review'].dt.year == current_date.year)]
 
-    # Calculate the date for the first day of the previous month
+def filter_previous_month(df):
+    current_date = datetime.now()
     previous_month_first_day = current_date - relativedelta(months=1)
     previous_month_first_day = previous_month_first_day.replace(day=1)
-    # Calculate the date for the last day of the previous month
     previous_month_last_day = previous_month_first_day + relativedelta(day=31)
+    return df.loc[(df['date_review'] >= previous_month_first_day) & (df['date_review'] <= previous_month_last_day)]
 
-    # Filter the DataFrame for records within the previous month
-    previous_month_df = df.loc[(df['date_review'] >= previous_month_first_day) & (df['date_review'] <= previous_month_last_day)]
+def calculate_metrics_for_month(df):
+    recommendation_percentage = df['recommended'].mean() * 100
+    average_money_value = df['money_value'].mean()
+    average_service_score = df['score'].mean()
+    review_count = len(df)
+    return recommendation_percentage, average_money_value, average_service_score, review_count
 
-
-    this_recommendation_percentage = this_month_df['recommended'].mean() *100 
-    this_average_money_value = this_month_df['money_value'].mean()
-    this_average_service_score = this_month_df['score'].mean()
-    this_review_count = len(this_month_df)
-
-    # Calculate previous metrics
-    previous_recommendation_percentage = previous_month_df['recommended'].mean() * 100
-    previous_average_money_value = previous_month_df['money_value'].mean()
-    previous_average_service_score = previous_month_df['score'].mean()
-    previous_review_count = len(previous_month_df)
-    
-    # Calculate changes in metrics
-    change_recommendation_percentage = this_recommendation_percentage - previous_recommendation_percentage
-    change_average_money_value = this_average_money_value - previous_average_money_value
-    change_average_service_score = this_average_service_score - previous_average_service_score
-    change_review_count = this_review_count - previous_review_count
-
-    # Last refresh date
+def display_last_refresh_date():
+    current_date = datetime.now()
     st.text(F"Last Refresh: {current_date}")
 
-    # Self-selection bias acknowledgement
-    # Add the blog content
-    st.write("""
-    **Self-Sampling Bias:**
-    While analyzing reviews of British Airways, it's crucial to acknowledge the presence of self-selection sampling bias. Similar to social media platforms like Yelp, individuals who voluntarily submit reviews may have had extreme experiences, affiliations with the airline, or simply different motivations compared to those who do not provide feedback. Due to self-sampling bias, the KPI and review will be worse than the general population. However, it's important to clarify that our aim is not to generalize findings about the entire population. Instead, we focus on identifying specific areas for improvement that British Airways can address.
-    """)
 
-    # Display the percentages as a dashboard
-    st.header('All Time Metrics')
-    col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
-    with col1:
-        st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%")
-        st.caption('A higher percentage indicates customers are more likely to recommend.')
-    with col2:
-        st.metric(label="VFM Score", value=f"{average_money_value:.2f} / 5")
-        st.caption('A higher score indicates greater satisfaction with the investment.')
-    with col3:
-        st.metric(label="Service Score", value=f"{average_service_score:.2f} / 5")
-        st.caption('A higher score indicates greater satisfaction with services.')
-    with col4:
-        st.metric(label="Total number of review", value=f"{review_count:.0f}")
-        st.caption('Total number of reviews from Air Quality.')
-    st.markdown("&nbsp;")
-
-    # Display the percentages as a dashboard
-    st.header(F'This Month Metrics ({current_date.strftime("%B - %Y")})')
-    col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
-    with col1:
-        st.metric(label="Recommendation Percentage", value=f"{this_recommendation_percentage:.2f}%", delta=f"{change_recommendation_percentage:.2f}% from last month")
-        st.caption('A higher percentage indicates customers are more likely to recommend.')
-    with col2:
-        st.metric(label="VFM Score", value=f"{this_average_money_value:.2f} / 5", delta= f"{change_average_money_value:.3f}% from last month")
-        st.caption('A higher score indicates greater satisfaction with the investment.')
-    with col3:
-        st.metric(label="Service Score", value=f"{this_average_service_score:.2f} / 5", delta=f"{change_average_service_score:.3f}% from last month")
-        st.caption('A higher score indicates greater satisfaction with services.')
-    with col4:
-        st.metric(label="Total number of review", value=f"{this_review_count:.0f}", delta=f"{change_review_count} reviews from last month")
-        st.caption('Total number of reviews from Air Quality.')
-    st.markdown("&nbsp;")
-
-    # Display the reviews
-    if st.checkbox('Show all reviews'):
-        st.write(df)
+def main():
+    # Set page configuration
+    st.set_page_config(layout="wide", page_title="British Airways Dashboard", page_icon="🛫")
+    topic = st.sidebar.radio("Chose a topic", ["Review Dashboard", "Review Chatbot"])
+    if topic == "Review Chatbot":
+        chatbot.display_chatbot()
     else:
-        st.write("Top 5 most recent reviews")
-        st.write(df.head(5))
-    # -------------------------------------
-    # Review Analysis
-    # input = this_month_df.to_string(index = False)
-    # st.header('Chatbot')
-    # instruction ="""briefly describe the input data in 3 bullet points """
-    # instruction = st.text_input("Ask something about this month data")
-    # st.write(open_ai.return_chatgpt_review(input, instruction))
-    
-    # -------------------------------------
-    # Chart Breakdown
-    st.header('Chart breakdown')
+    # -----------------------------------------------------------
+        df = read_df_from_csv()
+        df['date_review'] = pd.to_datetime(df['date_review']).dt.date
+        # Slicers
+        st.sidebar.title('General filters')
+        verified_filter = st.sidebar.multiselect('Verified', df['verified'].dropna().unique(), default=None)
+        recommended_filter = st.sidebar.multiselect('Recommended', df['recommended'].dropna().unique(), default=None)
+        country_filter = st.sidebar.multiselect('Country', df['country'].dropna().unique())
+        origin_filter = st.sidebar.multiselect('Origin', df['origin'].dropna().unique())
+        destination_filter = st.sidebar.multiselect('Destination', df['destination'].dropna().unique())
+        transit_filter = st.sidebar.multiselect('Transit', df['transit'].dropna().unique(), default=None)
+        aircraft_1_filter = st.sidebar.multiselect('Aircraft 1', df['aircraft_1'].dropna().unique())
+        aircraft_2_filter = st.sidebar.multiselect('Aircraft 2', df['aircraft_2'].dropna().unique())
+        type_filter = st.sidebar.multiselect('Type', df['type'].dropna().unique())
+        seat_type_filter = st.sidebar.multiselect('Seat Type', df['seat_type'].dropna().unique())
+        experience_filter = st.sidebar.multiselect('Experience', df['experience'].dropna().unique())
 
-    st.subheader('Experience Breakdown')
+        st.sidebar.title('Datetime Filters')
+        month_review_filter = st.sidebar.multiselect('Month of Review', range(1, 13), default=list(range(1, 13)))
+        year_review_filter = st.sidebar.multiselect('Year of Review', range(min(df['date_review']).year, max(df['date_review']).year + 1), default=list(range(min(df['date_review']).year, max(df['date_review']).year + 1)))
 
-    breakdown_option = st.selectbox(
-    "Select the category for breakdown:",
-    options=['experience type', 'seat type']  
-    )
-    breakdown_column = 'type' if breakdown_option == 'experience type' else 'seat_type'
+        def filter_data(df):
+            # Filter the DataFrame
+            if (verified_filter or recommended_filter or country_filter or origin_filter or destination_filter or transit_filter or aircraft_1_filter or aircraft_2_filter or type_filter or seat_type_filter or experience_filter or month_review_filter or year_review_filter):
+                filtered_df = df[
+                    (df['verified'].isin(verified_filter) if verified_filter else True) &
+                    (df['recommended'].isin(recommended_filter) if recommended_filter else True) &
+                    (df['country'].isin(country_filter) if country_filter else True) &
+                    (df['origin'].isin(origin_filter) if origin_filter else True) &
+                    (df['destination'].isin(destination_filter) if destination_filter else True) &
+                    (df['transit'] == transit_filter if transit_filter else True) &
+                    (df['aircraft_1'].isin(aircraft_1_filter) if aircraft_1_filter else True) &
+                    (df['aircraft_2'].isin(aircraft_2_filter) if aircraft_2_filter else True) &
+                    (df['type'].isin(type_filter) if type_filter else True) &
+                    (df['seat_type'].isin(seat_type_filter) if seat_type_filter else True) &
+                    (df['experience'].isin(experience_filter) if experience_filter else True) &
+                    (df['month_review_num'].isin(month_review_filter) if month_review_filter else True) &
+                    (df['year_review'].isin(year_review_filter) if year_review_filter else True)
+                ]
+                return filtered_df
+            else:
+                return df
+            
+        df = filter_data(df)
 
-    # Experience breakdown
-    fig1 = create_experience_chart(df, breakdown_column)
-    fig2 = create_experience_overview(df)
+        # Streamlit app
+        st.title('Flight Reviews')
 
-    col1, space1, col2 = st.columns([4,0.5, 2])
-    with col1:
-        st.plotly_chart(fig1, use_container_width=True, height=400, width=50)
+        # -------------------------------------
+        # Metrics Breakdown
+        # Calculate general metrics
+        recommendation_percentage, average_money_value, average_service_score, review_count = calculate_general_metrics(df)
 
-    with col2:
-        st.plotly_chart(fig2, use_container_width=True, height=300, width=100)
+        this_month_df = filter_current_month(df)
+        previous_month_df = filter_previous_month(df)
 
-    # Recommendation breakdown
-    fig3 = create_recommendation_chart(df, breakdown_column)
-    fig4 = create_recommendation_overview(df)
+        this_recommendation_percentage, this_average_money_value, this_average_service_score, this_review_count = calculate_metrics_for_month(this_month_df)
+        previous_recommendation_percentage, previous_average_money_value, previous_average_service_score, previous_review_count = calculate_metrics_for_month(previous_month_df)
 
-    col1, space1, col2 = st.columns([4,0.5, 2])
-    with col1:
-        st.plotly_chart(fig3, use_container_width=True, height=400, width=50)
-    with col2:
-        st.plotly_chart(fig4, use_container_width=True, height=300, width=100)
+        # Calculate changes in metrics
+        change_recommendation_percentage = this_recommendation_percentage - previous_recommendation_percentage
+        change_average_money_value = this_average_money_value - previous_average_money_value
+        change_average_service_score = this_average_service_score - previous_average_service_score
+        change_review_count = this_review_count - previous_review_count
 
-    # Rating Scores Breakdown
-    st.subheader("Rating Scores Breakdown")
+        # Display last refresh date
+        display_last_refresh_date()
 
-    # Score histogram
-    fig5 = create_score_histogram(df)
-    st.plotly_chart(fig5, use_container_width=True)
+        # Self-selection bias acknowledgement
+        # Add the blog content
+        st.write("""
+        **Self-Sampling Bias:**
+        While analyzing reviews of British Airways, it's crucial to acknowledge the presence of self-selection sampling bias. Similar to social media platforms like Yelp, individuals who voluntarily submit reviews may have had extreme experiences, affiliations with the airline, or simply different motivations compared to those who do not provide feedback. Due to self-sampling bias, the KPI and review will be worse than the general population. However, it's important to clarify that our aim is not to generalize findings about the entire population. Instead, we focus on identifying specific areas for improvement that British Airways can address.
+        """)
 
-    # Ratings boxplots
-    rating_columns = ['seat_comfort', 'cabin_serv', 'food', 'ground_service', 'wifi']
-    fig6 = create_plot_rating_distributions(df, rating_columns)
-    st.plotly_chart(fig6, use_container_width=True, height=600, width=400)
-    
-    # Time Intelligence
-    st.subheader('Time Intelligence')
-    df['date_review'] = pd.to_datetime(df['date_review'])
+        # Display the percentages as a dashboard
+        st.header('All Time Metrics')
+        col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
+        with col1:
+            st.metric(label="Recommendation Percentage", value=f"{recommendation_percentage:.2f}%")
+            st.caption('A higher percentage indicates customers are more likely to recommend.')
+        with col2:
+            st.metric(label="VFM Score", value=f"{average_money_value:.2f} / 5")
+            st.caption('A higher score indicates greater satisfaction with the investment.')
+        with col3:
+            st.metric(label="Service Score", value=f"{average_service_score:.2f} / 5")
+            st.caption('A higher score indicates greater satisfaction with services.')
+        with col4:
+            st.metric(label="Total number of review", value=f"{review_count:.0f}")
+            st.caption('Total number of reviews from Air Quality.')
+        st.markdown("&nbsp;")
 
-    # Avg score and money_value by year line chart
-    fig7 = create_combined_average_plot(df)
-    # st.plotly_chart(fig7, use_container_width=True)
+        # Display the percentages as a dashboard
+        st.header(F'This Month Metrics ({current_date.strftime("%B - %Y")})')
+        col1, space1, col2, space2, col3, space3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
+        with col1:
+            st.metric(label="Recommendation Percentage", value=f"{this_recommendation_percentage:.2f}%", delta=f"{change_recommendation_percentage:.2f}% from last month")
+            st.caption('A higher percentage indicates customers are more likely to recommend.')
+        with col2:
+            st.metric(label="VFM Score", value=f"{this_average_money_value:.2f} / 5", delta= f"{change_average_money_value:.3f}% from last month")
+            st.caption('A higher score indicates greater satisfaction with the investment.')
+        with col3:
+            st.metric(label="Service Score", value=f"{this_average_service_score:.2f} / 5", delta=f"{change_average_service_score:.3f}% from last month")
+            st.caption('A higher score indicates greater satisfaction with services.')
+        with col4:
+            st.metric(label="Total number of review", value=f"{this_review_count:.0f}", delta=f"{change_review_count} reviews from last month")
+            st.caption('Total number of reviews from Air Quality.')
+        st.markdown("&nbsp;")
 
-    # Avg recommendation rate by year line chart
-    fig8 = create_average_recommendation_percentage_by_year(df)
-    # st.plotly_chart(fig8, use_container_width=True)
+        # Display the reviews
+        if st.checkbox('Show all reviews'):
+            st.write(df)
+        else:
+            st.write("Top 5 most recent reviews")
+            st.write(df.head(5))
+        # Chart Breakdown
+        st.title('📊 Chart Breakdown')  # Added an icon (bar chart) before the text and a pie chart icon
+        
+        if st.checkbox('Create your own chart'):
+            pyg_app = get_pyg_app(df)
+            pyg_app.explorer()
 
-    fig10 = create_combined_plot(df)
-    st.plotly_chart(fig10, use_container_width=True)
+        # Experience Breakdown
+        st.subheader('Experience Breakdown')
 
-    # Ratings by year
-    service_columns = ['seat_comfort', 'cabin_serv', 'food', 'ground_service', 'wifi'] 
-    service_to_plot = st.selectbox('Select a service to plot:', service_columns)
-    fig9 = create_service_rating_distribution_chart(df, service_to_plot)
-    fig9.update_layout(height=600)
-    st.plotly_chart(fig9, use_container_width=True, height=200, width=400)
+        breakdown_option = st.selectbox(
+        "Select the category for breakdown:",
+        options=['experience type', 'seat type']  
+        )
+        breakdown_column = 'type' if breakdown_option == 'experience type' else 'seat_type'
 
-    # fig10 = create_combined_plot(df)
-    # st.plotly_chart(fig10, use_container_width=True)
+        # Experience breakdown
+        fig1 = create_experience_chart(df, breakdown_column)
+        fig2 = create_experience_overview(df)
+
+        col1, space1, col2 = st.columns([4,0.5, 2])
+        with col1:
+            st.plotly_chart(fig1, use_container_width=True, height=400, width=50)
+
+        with col2:
+            st.plotly_chart(fig2, use_container_width=True, height=300, width=100)
+
+        # Recommendation breakdown
+        fig3 = create_recommendation_chart(df, breakdown_column)
+        fig4 = create_recommendation_overview(df)
+
+        col1, space1, col2 = st.columns([4,0.5, 2])
+        with col1:
+            st.plotly_chart(fig3, use_container_width=True, height=400, width=50)
+        with col2:
+            st.plotly_chart(fig4, use_container_width=True, height=300, width=100)
+
+        # Rating Scores Breakdown
+        st.subheader("Rating Scores Breakdown")
+
+        # Score histogram
+        fig5 = create_score_histogram(df)
+        st.plotly_chart(fig5, use_container_width=True)
+
+        # Ratings boxplots
+        rating_columns = ['seat_comfort', 'cabin_serv', 'food', 'ground_service', 'wifi']
+        fig6 = create_plot_rating_distributions(df, rating_columns)
+        st.plotly_chart(fig6, use_container_width=True, height=600, width=400)
+        
+        # Time Intelligence
+        st.subheader('Time Intelligence')
+        df['date_review'] = pd.to_datetime(df['date_review'])
+
+        # Avg score and money_value by year line chart
+        fig7 = create_combined_average_plot(df)
+        # st.plotly_chart(fig7, use_container_width=True)
+
+        # Avg recommendation rate by year line chart
+        fig8 = create_average_recommendation_percentage_by_year(df)
+        # st.plotly_chart(fig8, use_container_width=True)
+
+        fig10 = create_combined_plot(df)
+        st.plotly_chart(fig10, use_container_width=True)
+
+        # Ratings by year
+        service_columns = ['seat_comfort', 'cabin_serv', 'food', 'ground_service', 'wifi'] 
+        service_to_plot = st.selectbox('Select a service to plot:', service_columns)
+        fig9 = create_service_rating_distribution_chart(df, service_to_plot)
+        fig9.update_layout(height=600)
+        st.plotly_chart(fig9, use_container_width=True, height=200, width=400)
 
 
 if __name__ == "__main__":
