@@ -93,6 +93,8 @@ def generate_gpt_response(user_query, chroma_result, client):
     {chroma_result}
 
     Format your response as follows:
+    **Augmented Response**
+
     [Your augmented response here]
     """
     response = client.chat.completions.create(
