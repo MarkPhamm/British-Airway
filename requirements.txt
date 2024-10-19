@@ -28,4 +28,4 @@ xgboost==2.1.1
 xlrd==2.0.1
 yahoo-fin==0.8.9.1
 yfinance==0.2.44
-pysqlite3
+pysqlite3-binary
