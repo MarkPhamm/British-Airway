@@ -28,6 +28,12 @@ def upload_to_s3(df: pd.DataFrame, bucket_name: str, directory: str) -> None:
     s3_file_path = f"{directory}/{filename}"
 
     try:
+        # Clear the bucket before uploading
+        objects_to_delete = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=directory)
+        if 'Contents' in objects_to_delete:
+            delete_keys = {'Objects': [{'Key': obj['Key']} for obj in objects_to_delete['Contents']]}
+            s3_client.delete_objects(Bucket=bucket_name, Delete=delete_keys)
+
         csv_buffer = io.StringIO()
         df.to_csv(csv_buffer, index=False)
 
