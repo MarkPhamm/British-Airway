@@ -4,9 +4,11 @@ import streamlit as st
 from openai import OpenAI
 from dotenv import load_dotenv
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import config as cfg
 
 # Handle SQLite3 import for deployment
-deploy = True
+deploy = cfg.deploy
 if deploy:
     OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
     __import__('pysqlite3')
@@ -208,6 +210,7 @@ def display_chatbot():
         st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 
 def main():
+    st.set_page_config(layout="wide", page_title="British Airways Review Chatbot", page_icon="💬")
     display_chatbot()
 
 if __name__ == "__main__":

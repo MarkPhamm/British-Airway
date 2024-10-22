@@ -11,11 +11,13 @@ import logging
 import shutil
 import streamlit as st
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import config as cfg
 load_dotenv('.env')  # looks for .env in Python script directory unless path is provided
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 # Handle SQLite3 import for deployment
-deploy = True
+deploy = cfg.deploy
 if deploy:
     OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
     __import__('pysqlite3')
