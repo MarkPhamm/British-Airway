@@ -210,6 +210,7 @@ def display_chatbot():
         st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 
 def main():
+    st.set_page_config(layout="wide", page_title="British Airways Review Chatbot", page_icon="💬")
     display_chatbot()
 
 if __name__ == "__main__":

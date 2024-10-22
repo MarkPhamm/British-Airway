@@ -163,7 +163,7 @@ def display_dashboard(aws_access_key_id, aws_secret_access_key):
     st.plotly_chart(fig11, use_container_width=True, height=600, width=400)
 
 def main():
-    st.set_page_config(layout="wide", page_title="British Airways Review Analysis", page_icon="🛫")
+    st.set_page_config(layout="wide", page_title="British Airways Review Dashboard", page_icon="🛫")
     display_dashboard(aws_access_key_id, aws_secret_access_key)
 
 if __name__ == "__main__":
