@@ -7,6 +7,30 @@ import app.utils as utils
 from datetime import datetime
 import config as cfg
 
+import os
+import sys
+import warnings
+
+import streamlit as st
+from dotenv import load_dotenv
+
+import config as cfg
+
+# Load environment variables
+load_dotenv('.env')
+aws_access_key_id = os.getenv('aws_access_key_id')
+aws_secret_access_key = os.getenv('aws_secret_access_key')
+
+# Handle deployment configurations
+if cfg.deploy:
+    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+    __import__('pysqlite3')
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+    aws_access_key_id = st.secrets['aws_access_key_id']
+    aws_secret_access_key = st.secrets['aws_secret_access_key']
+
+import warnings
+
 def display_dashboard(aws_access_key_id, aws_secret_access_key):
     # -----------------------------------------------------------
     if cfg.data_source == 's3':
@@ -137,3 +161,10 @@ def display_dashboard(aws_access_key_id, aws_secret_access_key):
     # Country distribution map
     fig11 = vis.plot_country_distribution(df, service)
     st.plotly_chart(fig11, use_container_width=True, height=600, width=400)
+
+def main():
+    st.set_page_config(layout="wide", page_title="British Airways Review Analysis", page_icon="🛫")
+    display_dashboard(aws_access_key_id, aws_secret_access_key)
+
+if __name__ == "__main__":
+    main()

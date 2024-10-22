@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import streamlit as st
-import utils
+import app.utils as utils
 
 def calculate_general_metrics(df):
     recommendation_percentage = df['recommended'].mean() * 100
@@ -66,7 +66,7 @@ def calculate_metrics(df, compare_with):
 def display_metrics(df):
     # Display last refresh date
     utils.display_last_refresh_date()
-    
+
     # Self-selection bias acknowledgement
     st.write("""
         **Self-Sampling Bias:**

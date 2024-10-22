@@ -1,2 +1,2 @@
-deploy = True
+deploy = False
 data_source = 's3'
