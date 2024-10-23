@@ -4,12 +4,14 @@ import time
 import os
 import sys
 import argparse
+from datetime import datetime
 
 # Add the parent directory to sys.path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
+import config as cfg
 from etl import extract, transform, load
 
 def setup_logging() -> None:
@@ -22,6 +24,16 @@ def run_etl_pipeline(upload_to_s3: bool) -> NoReturn:
     start_time = time.time()
     try:
         logging.info("Starting ETL pipeline")
+
+        cfg.last_refresh = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        with open('config.py', 'r') as config_file:
+            lines = config_file.readlines()
+        with open('config.py', 'w') as config_file:
+            for line in lines:
+                if 'last_refresh' not in line:
+                    config_file.write(line)
+            config_file.write(f"last_refresh = '{cfg.last_refresh}'\n")
         
         steps = [
             ("Extracting data", extract),
