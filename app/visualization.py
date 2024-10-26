@@ -10,7 +10,7 @@ def plot_experience(df, breakdown_column, chart_type='distribution'):
     df['experience'] = pd.Categorical(df['experience'], categories=['Poor', 'Fair', 'Good'], ordered=True)
     
     if chart_type == 'distribution':
-        experience_by_breakdown = df.groupby([breakdown_column, 'experience']).size().reset_index(name='count')
+        experience_by_breakdown = df.groupby([breakdown_column, 'experience'], observed=False).size().reset_index(name='count')
 
         color_map = {
             'Poor': '#e63946',  
@@ -50,7 +50,7 @@ def plot_recommendation(df, breakdown_column, chart_type='distribution'):
     df['recommended'] = pd.Categorical(df['recommended'], categories=[False, True], ordered=True)
     
     if chart_type == 'distribution':
-        recommendation_by_breakdown = df.groupby([breakdown_column, 'recommended']).size().reset_index(name='count')
+        recommendation_by_breakdown = df.groupby([breakdown_column, 'recommended'], observed=False).size().reset_index(name='count')
 
         color_map = {
             False: '#e63946',  
@@ -171,7 +171,7 @@ def plot_dual_axis_metrics(df):
 # Function to create stacked bar plots of service ratings by year
 def plot_service_ratings(df, service_column):
     df[service_column] = pd.Categorical(df[service_column], categories=[1, 2, 3, 4, 5], ordered=True)
-    service_rating_counts = df.groupby(['year_review', service_column]).size().reset_index(name='count')
+    service_rating_counts = df.groupby(['year_review', service_column], observed=False).size().reset_index(name='count')
 
     fig = px.bar(service_rating_counts, x='year_review', y='count', color=service_column,
                  title=f'Yearly Distribution of {service_column.capitalize()} Ratings',
