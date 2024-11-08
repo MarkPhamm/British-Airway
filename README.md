@@ -1,18 +1,18 @@
 ![image](https://github.com/MarkPhamm/British-Airway/assets/99457952/919f1671-e640-4308-a908-8070585ded96)
 Access our Streamlit [Dashboard Website](https://ba-review.streamlit.app/)
 
-# British Airway Review (Phase 1)
+# British Airways Review (Phase 1)
 
-**End-to-end Analytics Project for British Airway:** Analyze Customer Experience
+**End-to-end Analytics Project for British Airways:** Analyze Customer Experience
 This project will simulate a data team at British Airways, from ETL to Business Intelligence and Data Science. We will extract real-time data from [Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways), and perform 4 types of modern analytics to find insightful recommendations.
 
 **Example Analysis**
 ![image](https://github.com/user-attachments/assets/11c412af-a554-4d8c-a063-b91d6f6748b7)
 
 
-# British Airway Review (Phase 2)
+# British Airways Review (Phase 2)
 
-**RAG chatbot for British Airway:** Analyze Customer Review with a RAG chatbot
+**RAG chatbot for British Airways:** Analyze Customer Review with a RAG chatbot
 The **RAG Chatbot for British Airways** utilizes cutting-edge technology stacks like **Chroma DB** and **LangChain**. **Chroma DB** serves as the vector database, enabling efficient storage and retrieval of customer review embeddings. **LangChain** powers the chatbot's integration of retrieval and generative AI, allowing for contextually accurate responses. This combination ensures fast, intelligent analysis of customer reviews, enhancing British Airways' ability to address feedback and improve customer satisfaction.
 
 **Example RAG response**
