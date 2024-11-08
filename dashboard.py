@@ -88,14 +88,25 @@ def display_dashboard(aws_access_key_id, aws_secret_access_key):
     # Metrics Breakdown
     # Calculate general metrics
     metrics.display_metrics(df)
-    st.markdown("&nbsp;")
 
-    # Display the reviews
-    if st.checkbox('Show all reviews'):
-        st.write(df)
+    current_month_reviews = df[df['date_review'].dt.month == datetime.now().month]
+    positive_reviews = current_month_reviews[current_month_reviews['experience'] == "Good"].sample(n=1, random_state=1) if not current_month_reviews[current_month_reviews['experience'] == "Good"].empty else None
+    negative_reviews = current_month_reviews[current_month_reviews['experience'] == "Poor"].sample(n=1, random_state=1) if not current_month_reviews[current_month_reviews['experience'] == "Poor"].empty else None
+
+    st.markdown("### Example Positive Reviews")
+    if positive_reviews is not None:
+        for index, row in positive_reviews.iterrows():
+            st.markdown(f"- **Review:** {row['review']}")
     else:
-        st.write("Top 5 most recent reviews")
-        st.write(df.head(5))
+        st.markdown("No positive reviews for this month.")
+
+    st.markdown("### Example Negative Reviews")
+    if negative_reviews is not None:
+        for index, row in negative_reviews.iterrows():
+            st.markdown(f"- **Review:** {row['review']}")
+    else:
+        st.markdown("No negative reviews for this month.")
+            
     # Chart Breakdown
     st.title('📊 Chart Breakdown')  
     
@@ -113,10 +124,10 @@ def display_dashboard(aws_access_key_id, aws_secret_access_key):
     breakdown_column = 'type' if breakdown_option == 'customer type' else 'seat_type'
 
     # Experience breakdown
-    fig1 = vis.plot_experience(df, breakdown_column, chart_type='distribution')
-    fig2 = vis.plot_experience(df, breakdown_column, chart_type='composition')
+    fig1 = vis.plot_experience(df, breakdown_column, chart_type='composition')
+    fig2 = vis.plot_experience(df, breakdown_column, chart_type='distribution')
 
-    col1, space, col2 = st.columns([4,0.5, 2])
+    col1, space, col2 = st.columns([2,0.5, 4])
     with col1:
         st.plotly_chart(fig1, use_container_width=True, height=400, width=100)
 
@@ -124,10 +135,10 @@ def display_dashboard(aws_access_key_id, aws_secret_access_key):
         st.plotly_chart(fig2, use_container_width=True, height=400, width=100)
 
     # Recommendation breakdown
-    fig3 = vis.plot_recommendation(df, breakdown_column, chart_type='distribution')
-    fig4 = vis.plot_recommendation(df, breakdown_column, chart_type='composition')
+    fig3 = vis.plot_recommendation(df, breakdown_column, chart_type='composition')
+    fig4 = vis.plot_recommendation(df, breakdown_column, chart_type='distribution')
 
-    col1, space1, col2 = st.columns([4,0.5, 2])
+    col1, space1, col2 = st.columns([2,0.5, 4])
     with col1:
         st.plotly_chart(fig3, use_container_width=True, height=400, width=50)
     with col2:

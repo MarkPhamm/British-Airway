@@ -90,13 +90,9 @@ def plot_score_histogram(df):
     bar_color = '#2a9d8f' 
     border_color = 'white'  
 
-    kde = np.histogram(data, bins=10, density=True)
-    kde_xs = (kde[1][:-1] + kde[1][1:]) / 2 
-    kde_ys = kde[0]
-
     fig = go.Figure(data=[go.Histogram(
         x=data, 
-        nbinsx=10,
+        nbinsx=5,  # Lowered the number of bins
         name='Histogram', 
         histnorm='probability density',
         marker=dict(
@@ -111,7 +107,6 @@ def plot_score_histogram(df):
         legend_title_text='Distribution',
         template='plotly_white' 
     )
-    fig.add_trace(go.Scatter(x=kde_xs, y=kde_ys, mode='lines', name='KDE'))
     return fig
 
 # Function to create box plots of ratings
