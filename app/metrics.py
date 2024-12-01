@@ -5,9 +5,9 @@ import streamlit as st
 import app.utils as utils
 
 def calculate_general_metrics(df):
-    recommendation_percentage = int(df['recommended'].mean() * 100)  # Changed to int to remove decimals
-    average_money_value = df['money_value'].mean()
-    average_service_score = df['score'].mean()
+    recommendation_percentage = round(df['recommended'].mean() * 100,2)  # Changed to round to remove decimals
+    average_money_value = round(df['money_value'].mean(),2)
+    average_service_score = round(df['score'].mean(),2)
     review_count = len(df)
     return recommendation_percentage, average_money_value, average_service_score, review_count
 
@@ -30,9 +30,9 @@ def filter_previous_year_month(df):
     return df.loc[(df['date_review'] >= previous_year_first_day) & (df['date_review'] <= previous_year_last_day)]
 
 def calculate_metrics_for_month(df):
-    recommendation_percentage = int(df['recommended'].mean() * 100)  # Changed to int to remove decimals
-    average_money_value = df['money_value'].mean()
-    average_service_score = df['score'].mean()
+    recommendation_percentage = 0 if pd.isna(df['recommended'].mean()) else round(df['recommended'].mean() * 100, 2)
+    average_money_value = 0 if pd.isna(df['money_value'].mean()) else round(df['money_value'].mean(), 2)
+    average_service_score = 0 if pd.isna(df['score'].mean()) else round(df['score'].mean(), 2)
     review_count = len(df)
     return recommendation_percentage, average_money_value, average_service_score, review_count
 
