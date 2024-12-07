@@ -6,6 +6,24 @@ from botocore.exceptions import BotoCoreError, ClientError
 from datetime import datetime
 import io
 from pathlib import Path
+import os,sys
+from dotenv import load_dotenv
+import config as cfg
+import streamlit as st
+
+# Load environment variables
+load_dotenv('.env')
+aws_access_key_id = os.getenv('aws_access_key_id')
+aws_secret_access_key = os.getenv('aws_secret_access_key')
+
+# Handle deployment configurations
+if cfg.deploy:
+    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+    __import__('pysqlite3')
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+    aws_access_key_id = st.secrets['aws_access_key_id']
+    aws_secret_access_key = st.secrets['aws_secret_access_key']
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -22,7 +40,11 @@ def upload_to_s3(df: pd.DataFrame, bucket_name: str, directory: str) -> None:
         BotoCoreError: If there's an error with the AWS SDK.
         ClientError: If there's an error with the S3 client operation.
     """
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key
+    )
     current_date = datetime.now().strftime("%Y-%m-%d")
     filename = f"processed_data_{current_date}.csv"
     s3_file_path = f"{directory}/{filename}"
