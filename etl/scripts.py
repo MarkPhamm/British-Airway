@@ -27,9 +27,9 @@ def run_etl_pipeline(upload_to_s3: bool) -> NoReturn:
 
         cfg.last_refresh = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        with open('config.py', 'r') as config_file:
+        with open('refresh.py', 'r') as config_file:
             lines = config_file.readlines()
-        with open('config.py', 'w') as config_file:
+        with open('refresh.py', 'w') as config_file:
             for line in lines:
                 if 'last_refresh' not in line:
                     config_file.write(line)
