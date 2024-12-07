@@ -66,9 +66,9 @@ def calculate_metrics(df, compare_with):
             change_recommendation_percentage, change_average_money_value, change_average_service_score, change_review_count)
 
 def display_metrics(df):
+    
     # Display last refresh date
     utils.display_last_refresh_date()
-
     # Self-selection bias acknowledgement
     st.write("""
         **Self-Sampling Bias:**

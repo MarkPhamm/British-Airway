@@ -54,10 +54,13 @@ def run_etl_pipeline(upload_to_s3: bool) -> NoReturn:
         logging.error(f"An error occurred during the ETL process: {str(e)}")
         raise
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="Run ETL pipeline")
     parser.add_argument("--upload_to_s3", type=bool, default=True, help="Upload data to S3 (default: False)")
     args = parser.parse_args()
 
     setup_logging()
     run_etl_pipeline(args.upload_to_s3)
+
+if __name__ == "__main__":
+    main()
