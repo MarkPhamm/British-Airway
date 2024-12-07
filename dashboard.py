@@ -10,6 +10,7 @@ import config as cfg
 import os
 import sys
 import warnings
+from etl.scripts import main as etl_main
 
 import streamlit as st
 from dotenv import load_dotenv
@@ -84,28 +85,33 @@ def display_dashboard(aws_access_key_id, aws_secret_access_key):
     # Streamlit app
     st.title('Flight Reviews')
 
+    if st.button("Refresh Data"):
+        st.write("Running ETL...")
+        etl_main()
+        st.success("Data refreshed successfully!")
+
     # -------------------------------------
     # Metrics Breakdown
     # Calculate general metrics
     metrics.display_metrics(df)
 
-    current_month_reviews = df[df['date_review'].dt.month == datetime.now().month]
-    positive_reviews = current_month_reviews[current_month_reviews['experience'] == "Good"].sample(n=1, random_state=1) if not current_month_reviews[current_month_reviews['experience'] == "Good"].empty else None
-    negative_reviews = current_month_reviews[current_month_reviews['experience'] == "Poor"].sample(n=1, random_state=1) if not current_month_reviews[current_month_reviews['experience'] == "Poor"].empty else None
+    current_month_reviews = df[(df['date_review'].dt.month == datetime.now().month) & (df['date_review'].dt.year == datetime.now().year)]
+    positive_reviews = current_month_reviews[current_month_reviews['experience'] == "Good"].sample(n=1, random_state=1) if not current_month_reviews[current_month_reviews['recommended'] == True].empty else None
+    negative_reviews = current_month_reviews[current_month_reviews['experience'] == "Poor"].sample(n=1, random_state=1) if not current_month_reviews[current_month_reviews['recommended'] == False].empty else None
 
     st.markdown("### Example Positive Reviews")
     if positive_reviews is not None:
         for index, row in positive_reviews.iterrows():
             st.markdown(f"- **Review:** {row['review']}")
     else:
-        st.markdown("No positive reviews for this month.")
+        st.markdown("* No positive reviews for this month.")
 
     st.markdown("### Example Negative Reviews")
     if negative_reviews is not None:
         for index, row in negative_reviews.iterrows():
             st.markdown(f"- **Review:** {row['review']}")
     else:
-        st.markdown("No negative reviews for this month.")
+        st.markdown("* No negative reviews for this month.")
             
     # Chart Breakdown
     st.title('📊 Chart Breakdown')  
