@@ -1,6 +1,9 @@
 ![image](https://github.com/MarkPhamm/British-Airway/assets/99457952/919f1671-e640-4308-a908-8070585ded96)
 Access our Streamlit [Dashboard Website](https://ba-review.streamlit.app/)
 
+# Project Overview
+![diagram](https://github.com/user-attachments/assets/a6898e60-17b2-45b4-8d40-abbe84779cb2)
+
 # British Airways Review (Phase 1)
 
 **End-to-end Analytics Project for British Airways:** Analyze Customer Experience
