@@ -1,2 +1,2 @@
 deploy = False
-data_source = 's3'
+data_source = 'csv'
