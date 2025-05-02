@@ -4,17 +4,33 @@
 
 Access our Dashboard: [British Airways Dashboard](https://british-airways-dashboard-website.vercel.app/)
 
+## Team Structure
+
+### Project Leadership
+- **Mentor/Stakeholder**: [Nhan Tran](https://www.linkedin.com/in/panicpotatoe/) - Lead MLE at One Mount
+- **Analytics Engineer - Team Lead**: [Mark Pham](https://www.linkedin.com/in/minhbphamm/) - Mathematics & MIS at TCU
+
+### Engineering Teams
+- **Data Engineering**: [Leonard Dau](https://www.linkedin.com/in/leonard-dau-722399238/), [Thieu Nguyen](https://www.linkedin.com/in/thieunguyen1402/)
+- **Software Engineer**: [Tien Nguyen](https://www.linkedin.com/in/tien-nguyen-598758329), [Anh Duc Le](https://www.linkedin.com/in/duc-le-517420205/)
+- **Data Scientist**: [Robin Tran](https://www.linkedin.com/in/robin-tran/)
+- **Scrum Master**: [Hien Dinh](https://www.linkedin.com/in/hiendinhq)
+
 ## 1. Project Overview
 This end-to-end analytics project implements a modern data pipeline for British Airways, covering extraction, transformation, loading, and visualization of customer review data from [Air Inequality](https://www.airlinequality.com/airline-reviews/british-airways). The architecture leverages industry-standard tools and cloud services to create a robust, scalable analytics solution.
 
+
+**Self-selection bias:** While analyzing reviews of British Airways, it's crucial to acknowledge the presence of self-selection sampling bias. Similar to social media platforms like Yelp, individuals who voluntarily submit reviews may have had extreme experiences, affiliations with the airline, or simply different motivations compared to those who do not provide feedback. Due to self-sampling bias, the KPI and review will be worse than the general population. However, it's important to clarify that our aim is not to generalize findings about the entire population. Instead, we focus on identifying specific areas for improvement that British Airways can address.
+
 ## 2. Architecture Overview
-![BA Architecture](https://github.com/user-attachments/assets/d64c1a15-baa5-44a6-a086-49706aff2822)
+![BritishAirways](https://github.com/user-attachments/assets/2a9d45e6-be1b-4582-a9a0-3b7fb7536d9f)
 
 ### 2.1. Extraction Layer
 - **Repository**: [british_airways_extract_load](https://github.com/vietlam2002/british_airways_extract_load)
 - **Technology Stack**:
   - Python 3.12 with Pandas
-  - Apache Airflow for workflow orchestration
+  - Apache Airflow 
+for workflow orchestration
   - AWS S3 for data lake storage
   - Docker for containerization
 
@@ -32,7 +48,29 @@ The pipeline extracts customer review data from [AirlineQuality.com](https://www
 - IAM roles and permissions management
 - Error logging and monitoring
 
-### 2.2. Transformation Layer
+### 2.2. Data Cleaning Layer
+
+- **Repository**: [british_airways_data_cleaning](https://github.com/DucLe-2005/british_airways_data_cleaning)
+- **Technology Stack**:
+  - Python 3.12.5
+  - Pandas for data manipulation
+  - Regular expressions for text processing
+
+#### 2.2.1. Data Cleaning Steps
+1. Column standardization and renaming
+2. Date formatting and standardization
+3. Text cleaning and extraction
+4. Route parsing and airport/city extraction
+5. Aircraft name normalization
+6. Rating conversion and typing
+
+#### 2.2.2. Data Quality Assurance
+- Null value handling
+- Type consistency enforcement
+- Format standardization
+- Edge case management
+
+### 2.3. Transformation Layer
 
 - **Repository**: [british_airways_transformation](https://github.com/MarkPhamm/british_airways_transformation)
 - **Technology Stack**:
@@ -41,7 +79,7 @@ The pipeline extracts customer review data from [AirlineQuality.com](https://www
   - Apache Airflow with Astronomer
   - CI/CD via GitHub Actions
 
-#### 2.2.1. Data Model
+#### 2.3.1. Data Model
 The project implements a dimensional star schema:
 
 ![Schema Diagram](https://github.com/user-attachments/assets/f6276b06-9f03-410a-b2cc-785b0a23b8f2)
@@ -53,38 +91,16 @@ The project implements a dimensional star schema:
   - `dim_location`: Airport and city information
   - `dim_date`: Calendar and fiscal time tracking
 
-#### 2.2.2. Transformation Process
+#### 2.3.2. Transformation Process
 1. Data loading into Snowflake staging area
 2. Implementation of dbt models for dimensional modeling
 3. Business logic application and metrics calculation
 4. Data quality testing and validation
 
-#### 2.2.3. CI/CD Pipeline
+#### 2.3.3. CI/CD Pipeline
 - Automated dbt runs via GitHub Actions
 - Daily scheduled transformations
 - Email notifications on completion/failure
-
-### 2.3. Data Cleaning Layer
-
-- **Repository**: [british_airways_data_cleaning](https://github.com/DucLe-2005/british_airways_data_cleaning)
-- **Technology Stack**:
-  - Python 3.12.5
-  - Pandas for data manipulation
-  - Regular expressions for text processing
-
-#### 2.3.1. Data Cleaning Steps
-1. Column standardization and renaming
-2. Date formatting and standardization
-3. Text cleaning and extraction
-4. Route parsing and airport/city extraction
-5. Aircraft name normalization
-6. Rating conversion and typing
-
-#### 2.3.2. Data Quality Assurance
-- Null value handling
-- Type consistency enforcement
-- Format standardization
-- Edge case management
 
 ### 2.4. Visualization Layer
 
@@ -104,7 +120,7 @@ The project implements a dimensional star schema:
 
 ## 3. Key Business Insights
 
-### 3.1. Economy Customer Experience
+### 3.1. Economic Customer Experience
 
 ![Problem 1](https://github.com/MarkPhamm/British-Airway/assets/99457952/fad27d46-f9c1-4187-94af-02da65d3f10b)
 
@@ -120,7 +136,7 @@ The project implements a dimensional star schema:
 - Increase staff presence at London airports
 - Implement prompt feedback mechanisms
 
-### 3.2. Non-Economy Customer Experience
+### 3.2. Non-Economic Customer Experience
 
 #### 3.2.1. Key Findings
 - Non-economy customers prioritize food quality and seat comfort
@@ -130,46 +146,3 @@ The project implements a dimensional star schema:
 #### 3.2.2. Recommended Solutions
 - Redesign Business Class seating arrangement
 - Elevate in-flight dining quality and presentation
-
-## 4. Team Structure
-
-### 4.1. Project Leadership
-- **[Nhan Tran](https://www.linkedin.com/in/panicpotatoe/)**: Lead MLE at One Mount (Advisor)
-- **[Mark Pham](https://www.linkedin.com/in/minhbphamm/)**: Mathematics & MIS at TCU (Team Leader)
-
-### 4.2. Engineering Teams
-- **Data Engineering**: [Leonard Dau](https://www.linkedin.com/in/leonard-dau-722399238/), [Thieu Nguyen](https://www.linkedin.com/in/thieunguyen1402/)
-- **Data Analysis**: [Vy Nie](https://www.linkedin.com/in/vy-nie-712731227/), [Minh Ngo](https://www.linkedin.com/in/ngovoanhminh/), [Ahri Nguyen](https://www.linkedin.com/in/aringuyen26/)
-- **BI & Visualization**: [Quan Tran](https://www.linkedin.com/in/hquantran/)
-- **Data Science**: [Robin Tran](https://www.linkedin.com/in/robin-tran/)
-
-## 5. Technical Documentation
-
-### 5.1. ETL Pipeline Components
-
-#### 5.1.1. Extract-Load Pipeline
-The Extract-Load pipeline uses Apache Airflow DAGs to orchestrate:
-- Web scraping tasks
-- Data validation and initial cleaning
-- S3 uploading operations
-- Snowflake data loading
-
-#### 5.1.2. dbt Transformation Pipeline
-The dbt pipeline includes:
-- Source definitions and staging models
-- Dimensional modeling implementation
-- Incremental loading strategy
-- Data tests and documentation
-
-#### 5.1.3. Data Cleaning Pipeline
-The data cleaning process includes:
-- Standardized column naming
-- Date and text formatting
-- Route parsing and extraction
-- Rating normalization
-
-### 5.2. Deployment Information
-- Docker containerization for local development
-- AWS cloud infrastructure for production
-- Astronomer for Airflow management
-- GitHub Actions for CI/CD automation
